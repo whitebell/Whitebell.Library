@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Security;
 using System.Threading;
+using Whitebell.Library.Extension;
 
 namespace Whitebell.Library.Collections.Generic
 {
