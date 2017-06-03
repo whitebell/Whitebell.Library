@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Runtime.Serialization;
-using System.Globalization;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
+using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Whitebell.Library.Extension
 {
@@ -275,6 +274,26 @@ namespace Whitebell.Library.Extension
         /// <exception cref="InvalidCastException"><paramref name="name"/> に関連付けられた値を <typeparamref name="T"/> に変換できません。</exception>
         /// <exception cref="SerializationException">指定した名前の要素が、現在のインスタンス内に見つかりません。</exception>
         public static T GetValue<T>(this SerializationInfo si, string name) => (T)si.GetValue(name, typeof(T));
+
+        #endregion
+
+        #region System.Windows.Forms.Control
+
+        /// <summary>このコントロール内に含まれているすべての子孫コントロールを列挙します。</summary>
+        /// <param name="top"></param>
+        /// <returns>このコントロールに含まれるすべての子孫コントロールを含む <see cref="IEnumerable{Control}"/></returns>
+        public static IEnumerable<Control> EnumerateAllChildControls(this Control top)
+        {
+            foreach (Control c in top.Controls)
+            {
+                yield return c;
+                if (c.HasChildren)
+                {
+                    foreach (var cc in EnumerateAllChildControls(c))
+                        yield return cc;
+                }
+            }
+        }
 
         #endregion
     }
