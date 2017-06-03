@@ -1,12 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Whitebell.Library.Extension
 {
+    /// <summary>
+    /// Indicates which type of conversion to perform
+    /// </summary>
+    [Flags]
+    public enum StringConvert
+    {
+        /// <summary>
+        /// Performs no conversion.
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Converts the string to uppercase characters.
+        /// </summary>
+        Uppercase = 1,
+        /// <summary>
+        /// Converts the string to lowercase characters.
+        /// </summary>
+        Lowercase = 2,
+        /// <summary>
+        /// Converts the first letter of every word in the string to uppercase.
+        /// </summary>
+        TitleCase = 3,
+        /// <summary>
+        /// Converts narrow (single-byte) characters in the string to wide (double-byte) characters. Applies to Asian locales.
+        /// </summary>
+        FullWidth = 4,
+        /// <summary>
+        /// Converts wide (double-byte) characters in the string to narrow (single-byte) characters. Applies to Asian locales.
+        /// </summary>
+        HalfWidth = 8,
+        /// <summary>
+        /// Converts Hiragana characters in the string to Katakana characters. Applies to Japanese locale only.
+        /// </summary>
+        Katakana = 16,
+        /// <summary>
+        /// Converts Katakana characters in the string to Hiragana characters. Applies to Japanese locale only.
+        /// </summary>
+        Hiragana = 32,
+        /// <summary>
+        /// Converts the string to Simplified Chinese characters.
+        /// </summary>
+        SimplifiedChinese = 256,
+        /// <summary>
+        /// Converts the string to Traditional Chinese characters.
+        /// </summary>
+        TraditionalChinese = 512,
+        /// <summary>
+        /// Converts the string from file system rules for casing to linguistic rules.
+        /// </summary>
+        LinguisticCasing = 1024,
+    }
+
     public static class Extension
     {
         #region where T : System.IComparable<T>
@@ -173,6 +227,136 @@ namespace Whitebell.Library.Extension
         #endregion
 
         #region System.String
+
+        /// <summary>指定にしたがって変換された文字列型の値を返します。</summary>
+        /// <param name="str">変換する文字列</param>
+        /// <param name="conversion">変換方法を指定する <see cref="StringConvert"/> 列挙値。</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="Win32Exception"></exception>
+        public static string Convert(this string str, StringConvert conversion) => Convert(str, conversion, Thread.CurrentThread.CurrentCulture);
+
+        /// <summary>指定に従って変換された文字列型の値を返します。</summary>
+        /// <param name="str">変換する文字列</param>
+        /// <param name="conversion">変換方法を指定する <see cref="StringConvert"/> 列挙値。</param>
+        /// <param name="localeId">現在のシステムのロケールと異なるロケールにしたがって変換する場合のロケールID。</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="Win32Exception"></exception>
+        public static string Convert(this string str, StringConvert conversion, int localeId)
+        {
+            CultureInfo ci;
+            if (localeId == 0 || localeId == 1)
+                ci = Thread.CurrentThread.CurrentCulture;
+            else
+                ci = CultureInfo.GetCultureInfo(localeId & 65535);
+
+            return Convert(str, conversion, ci);
+        }
+
+        /// <summary>指定にしたがって変換された文字列型の値を返します。</summary>
+        /// <param name="str">変換する文字列</param>
+        /// <param name="conversion">変換方法を指定する <see cref="StringConvert"/> 列挙値。</param>
+        /// <param name="ci">現在のシステムの <see cref="CultureInfo"/> と異なる <see cref="CultureInfo"/> にしたがって変換する場合の <see cref="CultureInfo"/>。</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="Win32Exception"></exception>
+        public static string Convert(this string str, StringConvert conversion, CultureInfo ci)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (ci == null)
+                throw new ArgumentNullException(nameof(ci));
+            if ((conversion & ~(StringConvert.Uppercase | StringConvert.Lowercase | StringConvert.TitleCase | StringConvert.FullWidth | StringConvert.HalfWidth | StringConvert.Katakana | StringConvert.Hiragana | StringConvert.SimplifiedChinese | StringConvert.TraditionalChinese | StringConvert.LinguisticCasing)) != StringConvert.None)
+                throw new ArgumentOutOfRangeException(nameof(conversion));
+
+            if (str.Length == 0 || conversion == StringConvert.None)
+                return str;
+
+            var flag = MapFlag.None;
+
+            switch (conversion & StringConvert.TitleCase)
+            {
+                case StringConvert.TitleCase:
+                    flag |= MapFlag.LowerCase;
+                    //flag &= ~MapFlag.UpperCase;
+                    break;
+                case StringConvert.Uppercase:
+                    flag |= MapFlag.UpperCase;
+                    break;
+                case StringConvert.Lowercase:
+                    flag |= MapFlag.LowerCase;
+                    break;
+            }
+
+            switch (conversion & (StringConvert.FullWidth | StringConvert.HalfWidth))
+            {
+                case StringConvert.FullWidth:
+                    flag |= MapFlag.FullWidth;
+                    break;
+                case StringConvert.HalfWidth:
+                    flag |= MapFlag.HalfWidth;
+                    break;
+                case StringConvert.None:
+                    break;
+                default:
+                    throw new ArgumentException("StringConvert.FullWidth and StringConvert.HalfWidth are exclusive.", nameof(conversion));
+            }
+
+            switch (conversion & (StringConvert.Katakana | StringConvert.Hiragana))
+            {
+                case StringConvert.Katakana:
+                    flag |= MapFlag.Katakana;
+                    break;
+                case StringConvert.Hiragana:
+                    flag |= MapFlag.Hiragana;
+                    break;
+                case StringConvert.None:
+                    break;
+                default:
+                    throw new ArgumentException("StringConvert.Katakana and StringConvert.Hiragana are exclusive.", nameof(conversion));
+            }
+
+            switch (conversion & (StringConvert.SimplifiedChinese | StringConvert.TraditionalChinese))
+            {
+                case StringConvert.SimplifiedChinese:
+                    flag |= MapFlag.SimplifiedChinese;
+                    break;
+                case StringConvert.TraditionalChinese:
+                    flag |= MapFlag.TraditionalChinese;
+                    break;
+                case StringConvert.None:
+                    break;
+                default:
+                    throw new ArgumentException("StringConvert.SimplifiedChinese and StringConvert.TraditionalChinese are exclusive.", nameof(conversion));
+            }
+
+            if ((conversion & StringConvert.LinguisticCasing) == StringConvert.LinguisticCasing)
+            {
+                if ((conversion & StringConvert.TitleCase) != StringConvert.None)
+                    flag |= MapFlag.LinguisticCasing;
+                else
+                    throw new ArgumentOutOfRangeException(nameof(conversion));
+            }
+
+            var len = str.Length;
+            var dest = new char[Math.Min(len * 6, Int32.MaxValue)];
+            var count = Kernel32.LCMapStringEx(ci.Name, flag, str, len, dest, dest.Length);
+            if (count == 0)
+                throw new Win32Exception();
+
+            var cs = new char[count];
+            Array.ConstrainedCopy(dest, 0, cs, 0, count);
+            var ret = new string(cs);
+
+            if ((conversion & (StringConvert.TitleCase)) == StringConvert.TitleCase)
+                return ci.TextInfo.ToTitleCase(ret);
+            return ret;
+        }
+
         /// <summary>
         /// タブ文字'\t'を半角スペースに展開します。
         /// </summary>
