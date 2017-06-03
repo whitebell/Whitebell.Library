@@ -45,6 +45,7 @@
     <Compile Include="Extension\Extension.cs" />
     <Compile Include="Generics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Win32Api.cs" />
     <Compile Include="_Suppression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
