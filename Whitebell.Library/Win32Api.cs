@@ -62,6 +62,15 @@ namespace Whitebell.Library
         NormLinguisticCasing = 0x08000000
     }
 
+    [CLSCompliant(false)]
+    public enum TimErr : uint
+    {
+        NoError = 0,
+        Base = 96,
+        Struct = 129,
+        NoCanDo = 97,
+    }
+
     public static class Kernel32
     {
         #region LCMapStringEx (Vista/Server 2008)
@@ -98,5 +107,107 @@ namespace Whitebell.Library
             => LCMapStringEx(lpLocaleName, (uint)dwMapFlags, lpSrcStr, cchSrc, lpDestStr, cchDest, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
 
         #endregion
+    }
+
+    public static class Winmm
+    {
+        #region timeGetTime (2000 Professional/2000 Server)
+
+        /// <summary>
+        /// <para>The timeGetTime function retrieves the system time, in milliseconds.</para><para>The system time is the time elapsed since Windows was started.</para>
+        /// </summary>
+        /// <returns>Returns the system time, in milliseconds.</returns>
+        [CLSCompliant(false)]
+        [DllImport("Winmm", EntryPoint = "timeGetTime")]
+        public static extern uint TimeGetTime();
+        // DWORD timeGetTime(void);
+
+        #endregion
+
+        #region timeBeginPeriod (2000 Professional/2000 Server)
+
+        /// <summary>
+        /// The timeBeginPeriod function requests a minimum resolution for periodic timers.
+        /// </summary>
+        /// <param name="uPeriod"><para>Minimum timer resolution, in milliseconds, for the application or device driver.</para>
+        /// <para>A lower value specifies a higher (more accurate) resolution.</para></param>
+        /// <returns>Returns TimErr.NoError if successful or TimErr.NoCanDo if the resolution specified in uPeriod is out of range.</returns>
+        [DllImport("Winmm", EntryPoint = "timeBeginPeriod")]
+        internal static extern uint _timeBeginPeriod(uint uPeriod);
+        // MMRESULT timeBeginPeriod(UINT uPeriod);
+
+        /// <summary>
+        /// The timeBeginPeriod function requests a minimum resolution for periodic timers.
+        /// </summary>
+        /// <param name="uPeriod"><para>Minimum timer resolution, in milliseconds, for the application or device driver.</para>
+        /// <para>A lower value specifies a higher (more accurate) resolution.</para></param>
+        /// <returns>Returns TimErr.NoError if successful or TimErr.NoCanDo if the resolution specified in uPeriod is out of range.</returns>
+        [CLSCompliant(false)]
+        public static TimErr TimeBeginPeriod(uint uPeriod)
+        {
+            switch (_timeBeginPeriod(uPeriod))
+            {
+                case 0:
+                    return TimErr.NoError;
+                case 97:
+                    return TimErr.NoCanDo;
+                default:
+                    throw new AccessViolationException();
+            }
+        }
+
+        #endregion
+
+        #region timeEndPeriod (2000 Professional/2000 Server)
+
+        /// <summary>
+        /// The timeEndPeriod function clears a previously _set minimum timer resolution.
+        /// </summary>
+        /// <param name="uPeriod">Minimum timer resolution specified in the previous call to the timeBeginPeriod function.</param>
+        /// <returns>Returns TimErr.NoError if successful or TimErr.NoCanDo if the resolution specified in uPeriod is out of range.</returns>
+        [DllImport("Winmm", EntryPoint = "timeEndPeriod")]
+        internal static extern uint _timeEndPeriod(uint uPeriod);
+        // MMRESULT timeEndPeriod(UINT uPeriod);
+
+        /// <summary>
+        /// The timeEndPeriod function clears a previously _set minimum timer resolution.
+        /// </summary>
+        /// <param name="uPeriod">Minimum timer resolution specified in the previous call to the timeBeginPeriod function.</param>
+        /// <returns>Returns TimErr.NoError if successful or TimErr.NoCanDo if the resolution specified in uPeriod is out of range.</returns>
+        [CLSCompliant(false)]
+        public static TimErr TimeEndPeriod(uint uPeriod)
+        {
+            switch (_timeEndPeriod(uPeriod))
+            {
+                case 0:
+                    return TimErr.NoError;
+                case 97:
+                    return TimErr.NoCanDo;
+                default:
+                    throw new AccessViolationException();
+            }
+        }
+
+        #endregion
+    }
+}
+
+namespace Whitebell.Library.Win32Api.Wrap
+{
+    public static class WinmmTimer
+    {
+        private static volatile WinmmTimerImpl t;
+
+        static WinmmTimer() => t = new WinmmTimerImpl();
+
+        [CLSCompliant(false)]
+        public static uint TickCount => Winmm.TimeGetTime();
+
+        private class WinmmTimerImpl
+        {
+            public WinmmTimerImpl() => Winmm._timeBeginPeriod(1);
+
+            ~WinmmTimerImpl() => Winmm._timeEndPeriod(1);
+        }
     }
 }
