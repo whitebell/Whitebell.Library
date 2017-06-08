@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -137,6 +138,42 @@ namespace Whitebell.Library
         {
             var sb = new StringBuilder(Constants.MaxPath);
             if (!PathCanonicalize(sb, path))
+                throw new Win32Exception();
+            return sb.ToString();
+        }
+
+        #endregion
+
+        #region PathRelativePathTo (2000 Professional/2000 Server)
+
+        /// <summary>
+        /// Creates a relative path from one file or folder to another.
+        /// </summary>
+        /// <param name="pszPath">A pointer to a string that receives the relative path. This buffer must be at least MAX_PATH characters in size.</param>
+        /// <param name="pszFrom">A pointer to a null-terminated string of maximum length MAX_PATH that contains the path that defines the start of the relative path.</param>
+        /// <param name="dwAttrFrom">The file attributes of pszFrom. If this value contains FILE_ATTRIBUTE_DIRECTORY, pszFrom is assumed to be a directory; otherwise, pszFrom is assumed to be a file.</param>
+        /// <param name="pszTo">A pointer to a null-terminated string of maximum length MAX_PATH that contains the path that defines the endpoint of the relative path.</param>
+        /// <param name="dwAttrTo">The file attributes of pszTo. If this value contains FILE_ATTRIBUTE_DIRECTORY, pszTo is assumed to be directory; otherwise, pszTo is assumed to be a file.</param>
+        /// <returns>Returns TRUE if successful, or FALSE otherwise.</returns>
+        /// <remarks>This function takes a pair of paths and generates a relative path from one to the other. The paths do not have to be fully qualified, but they must have a common prefix, or the function will fail and return FALSE. For example, let the starting point, pszFrom, be "c:\FolderA\FolderB\FolderC", and the ending point, pszTo, be "c:\FolderA\FolderD\FolderE". PathRelativePathTo will return the relative path from pszFrom to pszTo as: "..\..\FolderD\FolderE". You will get the same result if you _set pszFrom to "\FolderA\FolderB\FolderC" and pszTo to "\FolderA\FolderD\FolderE". On the other hand, "c:\FolderA\FolderB" and "a:\FolderA\FolderD do not share a common prefix, and the function will fail. Note that "\\" is not considered a prefix and is ignored. If you _set pszFrom to "\\FolderA\FolderB", and pszTo to "\\FolderC\FolderD", the function will fail.</remarks>
+        [DllImport("shlwapi", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern bool PathRelativePathTo([Out]StringBuilder pszPath, [In]string pszFrom, [In]FileAttributes dwAttrFrom, [In]string pszTo, [In]FileAttributes dwAttrTo);
+        // BOOL PathRelativePathTo(_Out_ LPTSTR pszPath, _In_ LPCTSTR pszFrom, _In_ DWORD dwAttrFrom, _In_ LPCTSTR pszTo, _In_ DWORD dwAttrTo);
+
+        /// <summary>
+        /// Creates a relative path from one file or folder to another.
+        /// </summary>
+        /// <param name="basePath">A string that contains the path that defines the start of the relative path.</param>
+        /// <param name="absolutePath">A string that contains the path that defines the endpoint of the relative path.</param>
+        /// <returns>A relative path.</returns>
+        /// <exception cref="Win32Exception"></exception>
+        public static string PathRelativePathTo(string basePath, string absolutePath)
+        {
+            if (!Directory.Exists(basePath))
+                basePath = new FileInfo(basePath).DirectoryName;
+            var sb = new StringBuilder(Constants.MaxPath);
+            var res = PathRelativePathTo(sb, basePath, FileAttributes.Directory, absolutePath, FileAttributes.Normal);
+            if (!res)
                 throw new Win32Exception();
             return sb.ToString();
         }
