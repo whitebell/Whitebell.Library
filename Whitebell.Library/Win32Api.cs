@@ -1,12 +1,15 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Whitebell.Library
 {
+    internal static class Constants
+    {
+        public const int MaxPath = 260;
+    }
+
     /// <summary>
     /// http://msdn.microsoft.com/ja-jp/library/windows/desktop/dd318702.aspx
     /// http://msdn.microsoft.com/ja-jp/library/windows/desktop/dd318144.aspx
@@ -105,6 +108,38 @@ namespace Whitebell.Library
         [CLSCompliant(false)]
         public static int LCMapStringEx(string lpLocaleName, MapFlag dwMapFlags, string lpSrcStr, int cchSrc, char[] lpDestStr, int cchDest)
             => LCMapStringEx(lpLocaleName, (uint)dwMapFlags, lpSrcStr, cchSrc, lpDestStr, cchDest, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+
+        #endregion
+    }
+
+    public static class Shlwapi
+    {
+        #region PathCanonicalize (2000 Professional/2000 Server)
+
+        /// <summary>
+        /// Simplifies a path by removing navigation elements such as "." and ".." to produce a direct, well-formed path. Note  Misuse of this function can lead to a buffer overrun. We recommend the use of the safer PathCchCanonicalize or PathCchCanonicalizeEx function in its place.
+        /// </summary>
+        /// <param name="lpszDst">A pointer to a string that receives the canonicalized path. You must _set the size of this buffer to MAX_PATH to ensure that it is large enough to hold the returned string.</param>
+        /// <param name="lpszSrc">A pointer to a null-terminated string of maximum length MAX_PATH that contains the path to be canonicalized.</param>
+        /// <returns>Returns TRUE if a result has been computed and the content of the lpszDst output buffer is valid. Returns FALSE otherwise, and the contents of the buffer pointed to by lpszDst are invalid. To get extended error information, call GetLastError.</returns>
+        /// <remarks>This function allows the user to specify what to remove from a path by inserting special character sequences into the path. The ".." sequence indicates to remove a path segment from the current position to the previous path segment. The "." sequence indicates to skip over the next path segment to the following path segment. The root segment of the path cannot be removed. If there are more ".." sequences than there are path segments, the function returns TRUE and contents of the buffer pointed to by lpszDst contains just the root, "\".</remarks>
+        [DllImport("shlwapi", CharSet = CharSet.Auto, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool PathCanonicalize([Out]StringBuilder lpszDst, string lpszSrc);
+        // BOOL PathCanonicalize(_Out_ LPTSTR lpszDst, _In_ LPCTSTR lpszSrc);
+
+        /// <summary>
+        /// Simplifies a path by removing navigation elements such as "." and ".." to produce a direct, well-formed path.
+        /// </summary>
+        /// <param name="path">A string of maximum length MAX_PATH that contains the path to be canonicalized.</param>
+        /// <returns>A canonicalized path.</returns>
+        public static string PathCanonicalize(string path)
+        {
+            var sb = new StringBuilder(Constants.MaxPath);
+            if (!PathCanonicalize(sb, path))
+                throw new Win32Exception();
+            return sb.ToString();
+        }
 
         #endregion
     }
