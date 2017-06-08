@@ -204,6 +204,25 @@ namespace Whitebell.Library
         }
 
         #endregion
+
+        #region StrCmpLogicalW (XP/Server 2003)
+
+        /// <summary>
+        /// Compares two Unicode strings.
+        /// Digits in the strings are considered as numerical content rather than text.
+        /// This test is not case-sensitive.
+        /// </summary>
+        /// <param name="psz1">A pointer to the first null-terminated string to be compared.</param>
+        /// <param name="psz2">A pointer to the second null-terminated string to be compared.</param>
+        /// <returns>Returns zero if the strings are identical.
+        /// Returns 1 if the string pointed to by psz1 has a greater value than that pointed to by psz2.
+        /// Returns -1 if the string pointed to by psz1 has a lesser value than that pointed to by psz2.
+        /// </returns>
+        [DllImport("shlwapi", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public static extern int StrCmpLogicalW(string psz1, string psz2);
+        // int StrCmpLogicalW(_In_ PCWSTR psz1, _In_ PCWSTR psz2);
+
+        #endregion
     }
 
     public static class Winmm
