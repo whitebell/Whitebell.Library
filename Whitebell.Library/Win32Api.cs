@@ -179,6 +179,31 @@ namespace Whitebell.Library
         }
 
         #endregion
+
+        #region PathRemoveExtension (2000 Professional/2000 Server)
+
+        /// <summary>
+        /// Removes the file name extension from a path, if one is present.
+        /// </summary>
+        /// <param name="pszFile">A pointer to a null-terminated string of length MAX_PATH from which to remove the extension.</param>
+        /// <returns>This function does not return a value.</returns>
+        [DllImport("shlwapi", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern void PathRemoveExtension([MarshalAs(UnmanagedType.LPTStr)]StringBuilder pszFile);
+        // void PathRemoveExtension(_Inout_ LPTSTR pszPath);
+
+        /// <summary>
+        /// Removes the file name extension from a path, if one is present.
+        /// </summary>
+        /// <param name="path">A path to remove the extension.</param>
+        /// <returns>The path without the extension.</returns>
+        public static string PathRemoveExtension(string path)
+        {
+            var sb = new StringBuilder(path);
+            PathRemoveExtension(sb);
+            return sb.ToString();
+        }
+
+        #endregion
     }
 
     public static class Winmm
