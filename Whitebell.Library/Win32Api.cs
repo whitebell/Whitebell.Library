@@ -77,6 +77,69 @@ namespace Whitebell.Library
 
     public static class Kernel32
     {
+        [CLSCompliant(false)]
+        [Flags]
+        public enum EComparationFlags : uint
+        {
+            Zero = 0x0,
+            /// <summary>Ignore case</summary>
+            NORM_IGNORECASE = 0x1,
+            /// <summary>Ignore nonspacing chars</summary>
+            NORM_IGNORENONSPACE = 0x2,
+            /// <summary>Ignore symbols</summary>
+            NORM_IGNORESYMBOLS = 0x4,
+            /// <summary>Use digits as numbers sort method</summary>
+            SORT_DIGITSASNUMBERS = 0x8,
+            /// <summary>Linguistically appropriate 'ignore case'</summary>
+            LINGUISTIC_IGNORECASE = 0x10,
+            /// <summary>Linguistically appropriate 'ignore nonspace'</summary>
+            LINGUISTIC_IGNOREDIACRITIC = 0x20,
+            /// <summary>Use string sort method</summary>
+            SORT_STRINGSORT = 0x1000,
+            /// <summary>Ignore kanatype</summary>
+            NORM_IGNOREKANATYPE = 0x10000,
+            /// <summary>Ignore width</summary>
+            NORM_IGNOREWIDTH = 0x20000,
+            /// <summary>Use linguistic rules for casing</summary>
+            NORM_LINGUISTIC_CASING = 0x8000000
+        }
+
+        #region CompareStringEx (Vista/Server 2008)
+
+        /// <summary>
+        /// Compares two Unicode (wide character) strings, for a locale specified by name. Using CompareStringEx incorrectly can compromise the security of your application. Strings that are not compared correctly can produce invalid input. Test strings to make sure they are valid before using them, and provide error handlers. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/dd374047(v=vs.85).aspx
+        /// </summary>
+        /// <param name="lpLocaleName">Pointer to a locale name.</param>
+        /// <param name="dwCmpFlags">Flags that indicate how the function compares the two strings. By default, these flags are not _set. This parameter can specify a combination of any of the following values, or it can be _set to 0 to obtain the default behavior.</param>
+        /// <param name="lpString1">Pointer to the first string to compare.</param>
+        /// <param name="cchCount1">Length of the string indicated by lpString1, excluding the terminating null character. The application can supply a negative value if the string is null-terminated. In this case, the function determines the length automatically.</param>
+        /// <param name="lpString2">Pointer to the second string to compare.</param>
+        /// <param name="cchCount2">Length of the string indicated by lpString2, excluding the terminating null character. The application can supply a negative value if the string is null-terminated. In this case, the function determines the length automatically.</param>
+        /// <param name="lpVersionInformation">Reserved; must _set to NULL.</param>
+        /// <param name="lpReserved">Reserved; must _set to NULL.</param>
+        /// <param name="lParam">Reserved; must be _set to 0.</param>
+        /// <returns>Returns 1 when the string indicated by lpString1 is less in lexical value than the string indicated by lpString2. Returns 2 when the string indicated by lpString1 is equivalent in lexical value to the string indicated by lpString2. The two strings are equivalent for sorting purposes, although not necessarily identical. Returns 3 when the string indicated by lpString1 is greater in lexical value than the string indicated by lpString2. To maintain the C runtime convention of comparing strings, the value 2 can be subtracted from a nonzero return value. Then, the meaning of &lt;0, ==0, and &gt;0 is consistent with the C runtime. The function returns 0 if it does not succeed. To get extended error information, the application can call GetLastError, which can return one of the following error codes: ERROR_INVALID_FLAGS. The values supplied for flags were invalid. ERROR_INVALID_PARAMETER. Any of the parameter values was invalid.</returns>
+        [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern int CompareStringEx(string lpLocaleName, EComparationFlags dwCmpFlags, string lpString1, int cchCount1, string lpString2, int cchCount2, IntPtr lpVersionInformation, IntPtr lpReserved, IntPtr lParam);
+        // int CompareStringEx(_In_opt_ LPCWSTR lpLocaleName, _In_ DWORD dwCmpFlags, _In_ LPCWSTR lpString1, _In_ int cchCount1, _In_ LPCWSTR lpString2, _In_ int cchCount2, _In_opt_ LPNLSVERSIONINFO lpVersionInformation, _In_opt_ LPVOID lpReserved, _In_opt_ LPARAM lParam);
+
+        /// <summary>Compares two Unicode (wide character) strings, for a locale specified by name.</summary>
+        /// <param name="localeName">Locale name.</param>
+        /// <param name="cmpFlags">Flags that indicate how the function compares the two strings. By default, these flags are not _set. This parameter can specify a combination of any of the following values, or it can be _set to 0 to obtain the default behavior.</param>
+        /// <param name="str1">The first string to compare.</param>
+        /// <param name="str2">The second string to compare.</param>
+        /// <returns>Returns -1 when the string indicated by str1 is less in lexical value than the string indicated by str2. Returns 0 when the string indicated by str1 is equivalent in lexical value to the string indicated by str2. The two strings are equivalent for sorting purposes, although not necessarily identical. Returns 1 when the string indicated by str1 is greater in lexical value than the string indicated by str2.</returns>
+        [CLSCompliant(false)]
+        public static int CompareStringEx(string localeName, EComparationFlags cmpFlags, string str1, string str2)
+        {
+            var ret = CompareStringEx(localeName, cmpFlags, str1, str1.Length, str2, str2.Length, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+            if (ret == 0)
+                throw new Win32Exception();
+            return ret - 2;
+        }
+
+        #endregion
+
         #region LCMapStringEx (Vista/Server 2008)
 
         /// <summary>
