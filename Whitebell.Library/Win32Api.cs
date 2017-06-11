@@ -11,79 +11,6 @@ namespace Whitebell.Library
         public const int MaxPath = 260;
     }
 
-    /// <summary>
-    /// http://msdn.microsoft.com/ja-jp/library/windows/desktop/dd318702.aspx
-    /// http://msdn.microsoft.com/ja-jp/library/windows/desktop/dd318144.aspx
-    /// </summary>
-    [CLSCompliant(false)]
-    [Flags]
-    public enum MapFlag : uint
-    {
-        None = 0,
-        /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore case. For many scripts (notably Latin scripts), NORM_IGNORECASE coincides with LINGUISTIC_IGNORECASE. NOTE: NORM_IGNORECASE ignores any tertiary distinction, whether it is actually linguistic case or not. For example, in Arabic and Indic scripts, this flag distinguishes alternate forms of a character, but the differences do not correspond to linguistic case. LINGUISTIC_IGNORECASE causes the function to ignore only actual linguistic casing, instead of ignoring the third sorting weight. NOTE: For double-byte character set (DBCS) locales, NORM_IGNORECASE has an effect on all Unicode characters as well as narrow (one-byte) characters, including Greek and Cyrillic characters.</summary>
-        NormIgnoreCase = 0x00000001,
-        /// <summary>This flag can be used alone, with one another, or with the LCMAP_SORTKEY and/or LCMAP_BYTEREV flags. Ignore nonspacing characters. For many scripts (notably Latin scripts), NORM_IGNORENONSPACE coincides with LINGUISTIC_IGNOREDIACRITIC. Note  NORM_IGNORENONSPACE ignores any secondary distinction, whether it is a diacritic or not. Scripts for Korean, Japanese, Chinese, and Indic languages, among others, use this distinction for purposes other than diacritics. LINGUISTIC_IGNOREDIACRITIC causes the function to ignore only actual diacritics, instead of ignoring the second sorting weight.</summary>
-        NormIgnoreNonspace = 0x00000002,
-        /// <summary>This flag can be used alone, with one another, or with the LCMAP_SORTKEY and/or LCMAP_BYTEREV flags. Ignore symbols and punctuation.</summary>
-        NormIgnoreSymbols = 0x00000004,
-        /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Windows 7: Treat digits as numbers during sorting, for example, sort "2" before "10".</summary>
-        SortDigitsAsNumbers = 0x00000008,
-        /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore case, as linguistically appropriate.</summary>
-        LinguisticIgnoreCase = 0x00000010,
-        /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore nonspacing characters, as linguistically appropriate. NOTE This flag does not always produce predictable results when used with decomposed characters, that is, characters in which a base character and one or more nonspacing characters each have distinct code point values.</summary>
-        LinguisticIgnoreDiacritic = 0x00000020,
-        /// <summary>For locales and scripts capable of handling uppercase and lowercase, map all characters to lowercase.</summary>
-        LowerCase = 0x00000100,
-        /// <summary>For locales and scripts capable of handling uppercase and lowercase, map all characters to uppercase.</summary>
-        UpperCase = 0x00000200,
-        /// <summary>Windows 7: Map all characters to title case, in which the first letter of each major word is capitalized.</summary>
-        TitleCase = 0x00000300,
-        /// <summary>Produce a normalized sort key. If the LCMAP_SORTKEY flag is not specified, the function performs string mapping. For details of sort key generation and string mapping, see the Remarks section.</summary>
-        SortKey = 0x00000400,
-        /// <summary>Use byte reversal. For example, if the application passes in 0x3450 0x4822, the result is 0x5034 0x2248.</summary>
-        ByteReverse = 0x00000800,
-        /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Treat punctuation the same as symbols.</summary>
-        StringSort = 0x00001000,
-        /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Do not differentiate between hiragana and katakana characters. Corresponding hiragana and katakana characters compare as equal.</summary>
-        NormIgnoreKanaType = 0x00010000,
-        /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore the difference between half-width and full-width characters, for example, C a t == cat. The full-width form is a formatting distinction used in Chinese and Japanese scripts.</summary>
-        NormIgnoreWidth = 0x00020000,
-        /// <summary>Map all katakana characters to hiragana. This flag and LCMAP_KATAKANA are mutually exclusive.</summary>
-        Hiragana = 0x00100000,
-        /// <summary>Map all hiragana characters to katakana. This flag and LCMAP_HIRAGANA are mutually exclusive.</summary>
-        Katakana = 0x00200000,
-        /// <summary>Use narrow characters where applicable. This flag and LCMAP_FULLWIDTH are mutually exclusive.</summary>
-        HalfWidth = 0x00400000,
-        /// <summary>Use Unicode (wide) characters where applicable. This flag and LCMAP_HALFWIDTH are mutually exclusive.</summary>
-        FullWidth = 0x00800000,
-        /// <summary>Use linguistic rules for casing, instead of file system rules (default). This flag is valid with LCMAP_LOWERCASE or LCMAP_UPPERCASE only.</summary>
-        LinguisticCasing = 0x01000000,
-        /// <summary>Map traditional Chinese characters to simplified Chinese characters. This flag and LCMAP_TRADITIONAL_CHINESE are mutually exclusive.</summary>
-        SimplifiedChinese = 0x02000000,
-        /// <summary>Map simplified Chinese characters to traditional Chinese characters. This flag and LCMAP_SIMPLIFIED_CHINESE are mutually exclusive.</summary>
-        TraditionalChinese = 0x04000000,
-        /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Use linguistic rules for casing, instead of file system rules (default).</summary>
-        NormLinguisticCasing = 0x08000000
-    }
-
-    [CLSCompliant(false)]
-    public enum SymbolicLink : uint
-    {
-        /// <summary>The link target is a file.</summary>
-        File = 0u,
-        /// <summary>The link target is a directory.</summary>
-        Directory = 1u,
-    }
-
-    [CLSCompliant(false)]
-    public enum TimErr : uint
-    {
-        NoError = 0,
-        Base = 96,
-        Struct = 129,
-        NoCanDo = 97,
-    }
-
     public static class Kernel32
     {
         [CLSCompliant(false)]
@@ -111,6 +38,68 @@ namespace Whitebell.Library
             NORM_IGNOREWIDTH = 0x20000,
             /// <summary>Use linguistic rules for casing</summary>
             NORM_LINGUISTIC_CASING = 0x8000000
+        }
+
+        // http://msdn.microsoft.com/ja-jp/library/windows/desktop/dd318702.aspx
+        // http://msdn.microsoft.com/ja-jp/library/windows/desktop/dd318144.aspx
+        [CLSCompliant(false)]
+        [Flags]
+        public enum MapFlag : uint
+        {
+            None = 0,
+            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore case. For many scripts (notably Latin scripts), NORM_IGNORECASE coincides with LINGUISTIC_IGNORECASE. NOTE: NORM_IGNORECASE ignores any tertiary distinction, whether it is actually linguistic case or not. For example, in Arabic and Indic scripts, this flag distinguishes alternate forms of a character, but the differences do not correspond to linguistic case. LINGUISTIC_IGNORECASE causes the function to ignore only actual linguistic casing, instead of ignoring the third sorting weight. NOTE: For double-byte character set (DBCS) locales, NORM_IGNORECASE has an effect on all Unicode characters as well as narrow (one-byte) characters, including Greek and Cyrillic characters.</summary>
+            NormIgnoreCase = 0x00000001,
+            /// <summary>This flag can be used alone, with one another, or with the LCMAP_SORTKEY and/or LCMAP_BYTEREV flags. Ignore nonspacing characters. For many scripts (notably Latin scripts), NORM_IGNORENONSPACE coincides with LINGUISTIC_IGNOREDIACRITIC. Note  NORM_IGNORENONSPACE ignores any secondary distinction, whether it is a diacritic or not. Scripts for Korean, Japanese, Chinese, and Indic languages, among others, use this distinction for purposes other than diacritics. LINGUISTIC_IGNOREDIACRITIC causes the function to ignore only actual diacritics, instead of ignoring the second sorting weight.</summary>
+            NormIgnoreNonspace = 0x00000002,
+            /// <summary>This flag can be used alone, with one another, or with the LCMAP_SORTKEY and/or LCMAP_BYTEREV flags. Ignore symbols and punctuation.</summary>
+            NormIgnoreSymbols = 0x00000004,
+            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Windows 7: Treat digits as numbers during sorting, for example, sort "2" before "10".</summary>
+            SortDigitsAsNumbers = 0x00000008,
+            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore case, as linguistically appropriate.</summary>
+            LinguisticIgnoreCase = 0x00000010,
+            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore nonspacing characters, as linguistically appropriate. NOTE This flag does not always produce predictable results when used with decomposed characters, that is, characters in which a base character and one or more nonspacing characters each have distinct code point values.</summary>
+            LinguisticIgnoreDiacritic = 0x00000020,
+            /// <summary>For locales and scripts capable of handling uppercase and lowercase, map all characters to lowercase.</summary>
+            LowerCase = 0x00000100,
+            /// <summary>For locales and scripts capable of handling uppercase and lowercase, map all characters to uppercase.</summary>
+            UpperCase = 0x00000200,
+            /// <summary>Windows 7: Map all characters to title case, in which the first letter of each major word is capitalized.</summary>
+            TitleCase = 0x00000300,
+            /// <summary>Produce a normalized sort key. If the LCMAP_SORTKEY flag is not specified, the function performs string mapping. For details of sort key generation and string mapping, see the Remarks section.</summary>
+            SortKey = 0x00000400,
+            /// <summary>Use byte reversal. For example, if the application passes in 0x3450 0x4822, the result is 0x5034 0x2248.</summary>
+            ByteReverse = 0x00000800,
+            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Treat punctuation the same as symbols.</summary>
+            StringSort = 0x00001000,
+            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Do not differentiate between hiragana and katakana characters. Corresponding hiragana and katakana characters compare as equal.</summary>
+            NormIgnoreKanaType = 0x00010000,
+            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore the difference between half-width and full-width characters, for example, C a t == cat. The full-width form is a formatting distinction used in Chinese and Japanese scripts.</summary>
+            NormIgnoreWidth = 0x00020000,
+            /// <summary>Map all katakana characters to hiragana. This flag and LCMAP_KATAKANA are mutually exclusive.</summary>
+            Hiragana = 0x00100000,
+            /// <summary>Map all hiragana characters to katakana. This flag and LCMAP_HIRAGANA are mutually exclusive.</summary>
+            Katakana = 0x00200000,
+            /// <summary>Use narrow characters where applicable. This flag and LCMAP_FULLWIDTH are mutually exclusive.</summary>
+            HalfWidth = 0x00400000,
+            /// <summary>Use Unicode (wide) characters where applicable. This flag and LCMAP_HALFWIDTH are mutually exclusive.</summary>
+            FullWidth = 0x00800000,
+            /// <summary>Use linguistic rules for casing, instead of file system rules (default). This flag is valid with LCMAP_LOWERCASE or LCMAP_UPPERCASE only.</summary>
+            LinguisticCasing = 0x01000000,
+            /// <summary>Map traditional Chinese characters to simplified Chinese characters. This flag and LCMAP_TRADITIONAL_CHINESE are mutually exclusive.</summary>
+            SimplifiedChinese = 0x02000000,
+            /// <summary>Map simplified Chinese characters to traditional Chinese characters. This flag and LCMAP_SIMPLIFIED_CHINESE are mutually exclusive.</summary>
+            TraditionalChinese = 0x04000000,
+            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Use linguistic rules for casing, instead of file system rules (default).</summary>
+            NormLinguisticCasing = 0x08000000
+        }
+
+        [CLSCompliant(false)]
+        public enum SymbolicLink : uint
+        {
+            /// <summary>The link target is a file.</summary>
+            File = 0u,
+            /// <summary>The link target is a directory.</summary>
+            Directory = 1u,
         }
 
         #region CompareStringEx (Vista/Server 2008)
@@ -154,9 +143,9 @@ namespace Whitebell.Library
         /// <summary>Establishes a hard link between an existing file and a new file. This function is only supported on the NTFS file system, and only for files, not directories.</summary>
         /// <param name="lpFileName">The name of the new file. This parameter cannot specify the name of a directory.</param>
         /// <param name="lpExistingFileName">The name of the existing file. This parameter cannnot specify the name of directory.</param>
-        /// <param name="lpSecurityAttributes">Reserved; must be <see cref="IntPtr.Zero" /></param>
+        /// <param name="lpSecurityAttributes">Reserved; must be <see cref="IntPtr.Zero"/></param>
         /// <returns>If the function succeeds, the return value is true.
-        /// If the function fails, the return value is false. To get extended error information, call <see cref="Marshal.GetLastWin32Error()" />.
+        /// If the function fails, the return value is false. To get extended error information, call <see cref="Marshal.GetLastWin32Error()"/>.
         /// The maximum number of hard links that can be created with this function is 1023 per file.
         /// If more than 1023 links are created for a file, an error results.</returns>
         [DllImport("Kernel32", SetLastError = true, CharSet = CharSet.Unicode)]
@@ -168,7 +157,7 @@ namespace Whitebell.Library
         /// <param name="lpFileName">The name of the new file. This parameter cannot specify the name of a directory.</param>
         /// <param name="lpExistingFileName">The name of the existing file. This parameter cannnot specify the name of directory.</param>
         /// <returns>If the function succeeds, the return value is true.
-        /// If the function fails, the return value is false. To get extended error information, call <see cref="Marshal.GetLastWin32Error()" />.
+        /// If the function fails, the return value is false. To get extended error information, call <see cref="Marshal.GetLastWin32Error()"/>.
         /// The maximum number of hard links that can be created with this function is 1023 per file.
         /// If more than 1023 links are created for a file, an error results.</returns>
         public static bool CreateHardLink(string lpFileName, string lpExistingFileName) => CreateHardLink(lpFileName, lpExistingFileName, IntPtr.Zero);
@@ -342,6 +331,15 @@ namespace Whitebell.Library
 
     public static class Winmm
     {
+        [CLSCompliant(false)]
+        public enum TimErr : uint
+        {
+            NoError = 0,
+            Base = 96,
+            Struct = 129,
+            NoCanDo = 97,
+        }
+
         #region timeGetTime (2000 Professional/2000 Server)
 
         /// <summary>
@@ -362,7 +360,7 @@ namespace Whitebell.Library
         /// </summary>
         /// <param name="uPeriod"><para>Minimum timer resolution, in milliseconds, for the application or device driver.</para>
         /// <para>A lower value specifies a higher (more accurate) resolution.</para></param>
-        /// <returns>Returns TimErr.NoError if successful or TimErr.NoCanDo if the resolution specified in uPeriod is out of range.</returns>
+        /// <returns>Returns <see cref="TimErr.NoError"/> if successful or <see cref="TimErr.NoCanDo"/> if the resolution specified in uPeriod is out of range.</returns>
         [DllImport("Winmm", EntryPoint = "timeBeginPeriod")]
         internal static extern uint _timeBeginPeriod(uint uPeriod);
         // MMRESULT timeBeginPeriod(UINT uPeriod);
@@ -372,7 +370,7 @@ namespace Whitebell.Library
         /// </summary>
         /// <param name="uPeriod"><para>Minimum timer resolution, in milliseconds, for the application or device driver.</para>
         /// <para>A lower value specifies a higher (more accurate) resolution.</para></param>
-        /// <returns>Returns TimErr.NoError if successful or TimErr.NoCanDo if the resolution specified in uPeriod is out of range.</returns>
+        /// <returns>Returns <see cref="TimErr.NoError"/> if successful or <see cref="TimErr.NoCanDo"/> if the resolution specified in uPeriod is out of range.</returns>
         [CLSCompliant(false)]
         public static TimErr TimeBeginPeriod(uint uPeriod)
         {
@@ -395,7 +393,7 @@ namespace Whitebell.Library
         /// The timeEndPeriod function clears a previously set minimum timer resolution.
         /// </summary>
         /// <param name="uPeriod">Minimum timer resolution specified in the previous call to the timeBeginPeriod function.</param>
-        /// <returns>Returns TimErr.NoError if successful or TimErr.NoCanDo if the resolution specified in uPeriod is out of range.</returns>
+        /// <returns>Returns <see cref="TimErr.NoError"/> if successful or <see cref="TimErr.NoCanDo"/> if the resolution specified in uPeriod is out of range.</returns>
         [DllImport("Winmm", EntryPoint = "timeEndPeriod")]
         internal static extern uint _timeEndPeriod(uint uPeriod);
         // MMRESULT timeEndPeriod(UINT uPeriod);
@@ -404,7 +402,7 @@ namespace Whitebell.Library
         /// The timeEndPeriod function clears a previously set minimum timer resolution.
         /// </summary>
         /// <param name="uPeriod">Minimum timer resolution specified in the previous call to the timeBeginPeriod function.</param>
-        /// <returns>Returns TimErr.NoError if successful or TimErr.NoCanDo if the resolution specified in uPeriod is out of range.</returns>
+        /// <returns>Returns <see cref="TimErr.NoError"/> if successful or <see cref="TimErr.NoCanDo"/> if the resolution specified in uPeriod is out of range.</returns>
         [CLSCompliant(false)]
         public static TimErr TimeEndPeriod(uint uPeriod)
         {
