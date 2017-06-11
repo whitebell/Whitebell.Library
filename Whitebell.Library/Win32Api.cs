@@ -140,6 +140,32 @@ namespace Whitebell.Library
 
         #endregion
 
+        #region CreateHardLink (XP/Server 2003)
+
+        /// <summary>Establishes a hard link between an existing file and a new file. This function is only supported on the NTFS file system, and only for files, not directories.</summary>
+        /// <param name="lpFileName">The name of the new file. This parameter cannot specify the name of a directory.</param>
+        /// <param name="lpExistingFileName">The name of the existing file. This parameter cannnot specify the name of directory.</param>
+        /// <param name="lpSecurityAttributes">Reserved; must be <see cref="IntPtr.Zero" /></param>
+        /// <returns>If the function succeeds, the return value is true.
+        /// If the function fails, the return value is false. To get extended error information, call <see cref="Marshal.GetLastWin32Error()" />.
+        /// The maximum number of hard links that can be created with this function is 1023 per file.
+        /// If more than 1023 links are created for a file, an error results.</returns>
+        [DllImport("Kernel32", SetLastError = true, CharSet = CharSet.Unicode)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool CreateHardLink(string lpFileName, string lpExistingFileName, IntPtr lpSecurityAttributes);
+        // BOOL WINAPI CreateHardLink(_In_ LPCTSTR lpFileName, _In_ LPCTSTR lpExistingFileName, _Reserved_ LPSECURITY_ATTRIBUTES lpSecurityAttributes);
+
+        /// <summary>Establishes a hard link between an existing file and a new file. This function is only supported on the NTFS file system, and only for files, not directories.</summary>
+        /// <param name="lpFileName">The name of the new file. This parameter cannot specify the name of a directory.</param>
+        /// <param name="lpExistingFileName">The name of the existing file. This parameter cannnot specify the name of directory.</param>
+        /// <returns>If the function succeeds, the return value is true.
+        /// If the function fails, the return value is false. To get extended error information, call <see cref="Marshal.GetLastWin32Error()" />.
+        /// The maximum number of hard links that can be created with this function is 1023 per file.
+        /// If more than 1023 links are created for a file, an error results.</returns>
+        public static bool CreateHardLink(string lpFileName, string lpExistingFileName) => CreateHardLink(lpFileName, lpExistingFileName, IntPtr.Zero);
+
+        #endregion
+
         #region LCMapStringEx (Vista/Server 2008)
 
         /// <summary>
