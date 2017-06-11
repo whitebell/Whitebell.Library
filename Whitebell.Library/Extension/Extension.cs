@@ -276,29 +276,29 @@ namespace Whitebell.Library.Extension
             if (str.Length == 0 || conversion == StringConvert.None)
                 return str;
 
-            var flag = MapFlag.None;
+            var flag = Kernel32.MapFlag.None;
 
             switch (conversion & StringConvert.TitleCase)
             {
                 case StringConvert.TitleCase:
-                    flag |= MapFlag.LowerCase;
+                    flag |= Kernel32.MapFlag.LowerCase;
                     //flag &= ~MapFlag.UpperCase;
                     break;
                 case StringConvert.Uppercase:
-                    flag |= MapFlag.UpperCase;
+                    flag |= Kernel32.MapFlag.UpperCase;
                     break;
                 case StringConvert.Lowercase:
-                    flag |= MapFlag.LowerCase;
+                    flag |= Kernel32.MapFlag.LowerCase;
                     break;
             }
 
             switch (conversion & (StringConvert.FullWidth | StringConvert.HalfWidth))
             {
                 case StringConvert.FullWidth:
-                    flag |= MapFlag.FullWidth;
+                    flag |= Kernel32.MapFlag.FullWidth;
                     break;
                 case StringConvert.HalfWidth:
-                    flag |= MapFlag.HalfWidth;
+                    flag |= Kernel32.MapFlag.HalfWidth;
                     break;
                 case StringConvert.None:
                     break;
@@ -309,10 +309,10 @@ namespace Whitebell.Library.Extension
             switch (conversion & (StringConvert.Katakana | StringConvert.Hiragana))
             {
                 case StringConvert.Katakana:
-                    flag |= MapFlag.Katakana;
+                    flag |= Kernel32.MapFlag.Katakana;
                     break;
                 case StringConvert.Hiragana:
-                    flag |= MapFlag.Hiragana;
+                    flag |= Kernel32.MapFlag.Hiragana;
                     break;
                 case StringConvert.None:
                     break;
@@ -323,10 +323,10 @@ namespace Whitebell.Library.Extension
             switch (conversion & (StringConvert.SimplifiedChinese | StringConvert.TraditionalChinese))
             {
                 case StringConvert.SimplifiedChinese:
-                    flag |= MapFlag.SimplifiedChinese;
+                    flag |= Kernel32.MapFlag.SimplifiedChinese;
                     break;
                 case StringConvert.TraditionalChinese:
-                    flag |= MapFlag.TraditionalChinese;
+                    flag |= Kernel32.MapFlag.TraditionalChinese;
                     break;
                 case StringConvert.None:
                     break;
@@ -337,7 +337,7 @@ namespace Whitebell.Library.Extension
             if ((conversion & StringConvert.LinguisticCasing) == StringConvert.LinguisticCasing)
             {
                 if ((conversion & StringConvert.TitleCase) != StringConvert.None)
-                    flag |= MapFlag.LinguisticCasing;
+                    flag |= Kernel32.MapFlag.LinguisticCasing;
                 else
                     throw new ArgumentOutOfRangeException(nameof(conversion));
             }
