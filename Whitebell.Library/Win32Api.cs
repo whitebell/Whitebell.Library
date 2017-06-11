@@ -47,17 +47,34 @@ namespace Whitebell.Library
         public enum MapFlag : uint
         {
             None = 0,
-            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore case. For many scripts (notably Latin scripts), NORM_IGNORECASE coincides with LINGUISTIC_IGNORECASE. NOTE: NORM_IGNORECASE ignores any tertiary distinction, whether it is actually linguistic case or not. For example, in Arabic and Indic scripts, this flag distinguishes alternate forms of a character, but the differences do not correspond to linguistic case. LINGUISTIC_IGNORECASE causes the function to ignore only actual linguistic casing, instead of ignoring the third sorting weight. NOTE: For double-byte character set (DBCS) locales, NORM_IGNORECASE has an effect on all Unicode characters as well as narrow (one-byte) characters, including Greek and Cyrillic characters.</summary>
+            /// <summary>
+            /// This flag is used only with the <see cref="SortKey"/> flag.
+            /// Ignore case. For many scripts (notably Latin scripts), <see cref="NormIgnoreCase"/> coincides with <see cref="LinguisticIgnoreCase"/>.
+            /// NOTE: <see cref="NormIgnoreCase"/> ignores any tertiary distinction, whether it is actually linguistic case or not.
+            /// For example, in Arabic and Indic scripts, this flag distinguishes alternate forms of a character, but the differences do not correspond to linguistic case.
+            /// <see cref="LinguisticIgnoreCase"/> causes the function to ignore only actual linguistic casing, instead of ignoring the third sorting weight.
+            /// NOTE: For double-byte character set (DBCS) locales, <see cref="NormIgnoreCase"/> has an effect on all Unicode characters as well as narrow (one-byte) characters, including Greek and Cyrillic characters.
+            /// </summary>
             NormIgnoreCase = 0x00000001,
-            /// <summary>This flag can be used alone, with one another, or with the LCMAP_SORTKEY and/or LCMAP_BYTEREV flags. Ignore nonspacing characters. For many scripts (notably Latin scripts), NORM_IGNORENONSPACE coincides with LINGUISTIC_IGNOREDIACRITIC. Note  NORM_IGNORENONSPACE ignores any secondary distinction, whether it is a diacritic or not. Scripts for Korean, Japanese, Chinese, and Indic languages, among others, use this distinction for purposes other than diacritics. LINGUISTIC_IGNOREDIACRITIC causes the function to ignore only actual diacritics, instead of ignoring the second sorting weight.</summary>
+            /// <summary>
+            /// This flag can be used alone, with one another, or with the <see cref="SortKey"/> and/or <see cref="ByteReverse"/> flags.
+            /// Ignore nonspacing characters. For many scripts (notably Latin scripts), <see cref="NormIgnoreNonspace"/> coincides with <see cref="LinguisticIgnoreDiacritic"/>.
+            /// Note: <see cref="NormIgnoreNonspace"/> ignores any secondary distinction, whether it is a diacritic or not.
+            /// Scripts for Korean, Japanese, Chinese, and Indic languages, among others, use this distinction for purposes other than diacritics.
+            /// <see cref="LinguisticIgnoreDiacritic"/> causes the function to ignore only actual diacritics, instead of ignoring the second sorting weight.
+            /// </summary>
             NormIgnoreNonspace = 0x00000002,
-            /// <summary>This flag can be used alone, with one another, or with the LCMAP_SORTKEY and/or LCMAP_BYTEREV flags. Ignore symbols and punctuation.</summary>
+            /// <summary>This flag can be used alone, with one another, or with the <see cref="SortKey"/> and/or <see cref="ByteReverse"/> flags. Ignore symbols and punctuation.</summary>
             NormIgnoreSymbols = 0x00000004,
-            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Windows 7: Treat digits as numbers during sorting, for example, sort "2" before "10".</summary>
+            /// <summary>This flag is used only with the <see cref="SortKey"/> flag. Windows 7: Treat digits as numbers during sorting, for example, sort "2" before "10".</summary>
             SortDigitsAsNumbers = 0x00000008,
-            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore case, as linguistically appropriate.</summary>
+            /// <summary>This flag is used only with the <see cref="SortKey"/> flag. Ignore case, as linguistically appropriate.</summary>
             LinguisticIgnoreCase = 0x00000010,
-            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore nonspacing characters, as linguistically appropriate. NOTE This flag does not always produce predictable results when used with decomposed characters, that is, characters in which a base character and one or more nonspacing characters each have distinct code point values.</summary>
+            /// <summary>
+            /// This flag is used only with the <see cref="SortKey"/> flag. Ignore nonspacing characters, as linguistically appropriate.
+            /// NOTE: This flag does not always produce predictable results when used with decomposed characters,
+            /// that is, characters in which a base character and one or more nonspacing characters each have distinct code point values.
+            /// </summary>
             LinguisticIgnoreDiacritic = 0x00000020,
             /// <summary>For locales and scripts capable of handling uppercase and lowercase, map all characters to lowercase.</summary>
             LowerCase = 0x00000100,
@@ -65,31 +82,35 @@ namespace Whitebell.Library
             UpperCase = 0x00000200,
             /// <summary>Windows 7: Map all characters to title case, in which the first letter of each major word is capitalized.</summary>
             TitleCase = 0x00000300,
-            /// <summary>Produce a normalized sort key. If the LCMAP_SORTKEY flag is not specified, the function performs string mapping. For details of sort key generation and string mapping, see the Remarks section.</summary>
+            /// <summary>Produce a normalized sort key. If the <see cref="SortKey"/> flag is not specified, the function performs string mapping. For details of sort key generation and string mapping, see the Remarks section.</summary>
             SortKey = 0x00000400,
             /// <summary>Use byte reversal. For example, if the application passes in 0x3450 0x4822, the result is 0x5034 0x2248.</summary>
             ByteReverse = 0x00000800,
-            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Treat punctuation the same as symbols.</summary>
+            /// <summary>This flag is used only with the <see cref="SortKey"/> flag. Treat punctuation the same as symbols.</summary>
             StringSort = 0x00001000,
-            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Do not differentiate between hiragana and katakana characters. Corresponding hiragana and katakana characters compare as equal.</summary>
+            /// <summary>This flag is used only with the <see cref="SortKey"/> flag. Do not differentiate between hiragana and katakana characters. Corresponding hiragana and katakana characters compare as equal.</summary>
             NormIgnoreKanaType = 0x00010000,
-            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Ignore the difference between half-width and full-width characters, for example, C a t == cat. The full-width form is a formatting distinction used in Chinese and Japanese scripts.</summary>
+            /// <summary>
+            /// This flag is used only with the <see cref="SortKey"/> flag.
+            /// Ignore the difference between half-width and full-width characters, for example, C a t == cat.
+            /// The full-width form is a formatting distinction used in Chinese and Japanese scripts.
+            /// </summary>
             NormIgnoreWidth = 0x00020000,
-            /// <summary>Map all katakana characters to hiragana. This flag and LCMAP_KATAKANA are mutually exclusive.</summary>
+            /// <summary>Map all katakana characters to hiragana. This flag and <see cref="Katakana"/> are mutually exclusive.</summary>
             Hiragana = 0x00100000,
-            /// <summary>Map all hiragana characters to katakana. This flag and LCMAP_HIRAGANA are mutually exclusive.</summary>
+            /// <summary>Map all hiragana characters to katakana. This flag and <see cref="Hiragana"/> are mutually exclusive.</summary>
             Katakana = 0x00200000,
-            /// <summary>Use narrow characters where applicable. This flag and LCMAP_FULLWIDTH are mutually exclusive.</summary>
+            /// <summary>Use narrow characters where applicable. This flag and <see cref="FullWidth"/> are mutually exclusive.</summary>
             HalfWidth = 0x00400000,
-            /// <summary>Use Unicode (wide) characters where applicable. This flag and LCMAP_HALFWIDTH are mutually exclusive.</summary>
+            /// <summary>Use Unicode (wide) characters where applicable. This flag and <see cref="HalfWidth"/> are mutually exclusive.</summary>
             FullWidth = 0x00800000,
-            /// <summary>Use linguistic rules for casing, instead of file system rules (default). This flag is valid with LCMAP_LOWERCASE or LCMAP_UPPERCASE only.</summary>
+            /// <summary>Use linguistic rules for casing, instead of file system rules (default). This flag is valid with <see cref="LowerCase"/> or <see cref="UpperCase"/> only.</summary>
             LinguisticCasing = 0x01000000,
-            /// <summary>Map traditional Chinese characters to simplified Chinese characters. This flag and LCMAP_TRADITIONAL_CHINESE are mutually exclusive.</summary>
+            /// <summary>Map traditional Chinese characters to simplified Chinese characters. This flag and <see cref="TraditionalChinese"/> are mutually exclusive.</summary>
             SimplifiedChinese = 0x02000000,
-            /// <summary>Map simplified Chinese characters to traditional Chinese characters. This flag and LCMAP_SIMPLIFIED_CHINESE are mutually exclusive.</summary>
+            /// <summary>Map simplified Chinese characters to traditional Chinese characters. This flag and <see cref="SimplifiedChinese"/> are mutually exclusive.</summary>
             TraditionalChinese = 0x04000000,
-            /// <summary>This flag is used only with the LCMAP_SORTKEY flag. Use linguistic rules for casing, instead of file system rules (default).</summary>
+            /// <summary>This flag is used only with the <see cref="SortKey"/> flag. Use linguistic rules for casing, instead of file system rules (default).</summary>
             NormLinguisticCasing = 0x08000000
         }
 
