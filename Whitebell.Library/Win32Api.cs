@@ -17,27 +17,27 @@ namespace Whitebell.Library
         [Flags]
         public enum EComparationFlags : uint
         {
-            Zero = 0x0,
+            None = 0x0,
             /// <summary>Ignore case</summary>
-            NORM_IGNORECASE = 0x1,
+            NormIgnoreCase = 0x1,
             /// <summary>Ignore nonspacing chars</summary>
-            NORM_IGNORENONSPACE = 0x2,
+            NormIgnoreNonspace = 0x2,
             /// <summary>Ignore symbols</summary>
-            NORM_IGNORESYMBOLS = 0x4,
+            NormIgnoreSymbols = 0x4,
             /// <summary>Use digits as numbers sort method</summary>
-            SORT_DIGITSASNUMBERS = 0x8,
+            SortDigitAsNumbers = 0x8,
             /// <summary>Linguistically appropriate 'ignore case'</summary>
-            LINGUISTIC_IGNORECASE = 0x10,
+            LinguisticIgnoreCase = 0x10,
             /// <summary>Linguistically appropriate 'ignore nonspace'</summary>
-            LINGUISTIC_IGNOREDIACRITIC = 0x20,
+            LinguisticIgnoreDiacritic = 0x20,
             /// <summary>Use string sort method</summary>
-            SORT_STRINGSORT = 0x1000,
+            SortStringSort = 0x1000,
             /// <summary>Ignore kanatype</summary>
-            NORM_IGNOREKANATYPE = 0x10000,
+            NormIgnoreKanaType = 0x10000,
             /// <summary>Ignore width</summary>
-            NORM_IGNOREWIDTH = 0x20000,
+            NormIgnoreWidth = 0x20000,
             /// <summary>Use linguistic rules for casing</summary>
-            NORM_LINGUISTIC_CASING = 0x8000000
+            NormLinguisticCasing = 0x8000000
         }
 
         // http://msdn.microsoft.com/ja-jp/library/windows/desktop/dd318702.aspx
