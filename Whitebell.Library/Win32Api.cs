@@ -67,6 +67,15 @@ namespace Whitebell.Library
     }
 
     [CLSCompliant(false)]
+    public enum SymbolicLink : uint
+    {
+        /// <summary>The link target is a file.</summary>
+        File = 0u,
+        /// <summary>The link target is a directory.</summary>
+        Directory = 1u,
+    }
+
+    [CLSCompliant(false)]
     public enum TimErr : uint
     {
         NoError = 0,
@@ -163,6 +172,23 @@ namespace Whitebell.Library
         /// The maximum number of hard links that can be created with this function is 1023 per file.
         /// If more than 1023 links are created for a file, an error results.</returns>
         public static bool CreateHardLink(string lpFileName, string lpExistingFileName) => CreateHardLink(lpFileName, lpExistingFileName, IntPtr.Zero);
+
+        #endregion
+
+        #region CreateSymbolicLink (Vista/Server 2008)
+
+        /// <summary>Creates a symbolic link.</summary>
+        /// <param name="lpSymlinkFileName">The Symbolic link to be created.</param>
+        /// <param name="lpTargetFileName">The name of the target for the symbolic link to be created.
+        /// If lpTargetFileName has a device name associated with it, the link is treated as an absolute link;
+        /// otherwise, the link is treated as a relative link.</param>
+        /// <param name="dwFlags">Indicates whether the link target, lpTargetFileName, is a directory.</param>
+        /// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false.</returns>
+        [CLSCompliant(false)]
+        [DllImport("Kernel32", SetLastError = true, CharSet = CharSet.Unicode)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool CreateSymbolicLink(string lpSymlinkFileName, string lpTargetFileName, SymbolicLink dwFlags);
+        // BOOLEAN WINAPI CreateSymbolicLink(_In_ LPTSTR lpSymlinkFileName, _In_ LPTSTR loTargetFileName, _In_ DWORD dwFlags);
 
         #endregion
 
