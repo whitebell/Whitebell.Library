@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Whitebell.Library
+﻿namespace Whitebell.Library
 {
     public static class Generics
     {
@@ -8,7 +6,6 @@ namespace Whitebell.Library
         /// <typeparam name="T">値を入れ替える変数の型。</typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
-        [Obsolete]
         public static void Swap<T>(ref T lhs, ref T rhs)
         {
             T temp = lhs;
