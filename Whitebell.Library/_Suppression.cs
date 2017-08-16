@@ -10,4 +10,7 @@
 [assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "Type", Target = "Whitebell.Library.Collections.Generic.OrderedDictionary`2")]
 [assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "Type", Target = "Whitebell.Library.Extension.Extension")]
 
+[assembly: SuppressMessage("Usage", "RCS1202:Avoid NullReferenceException.", Scope = "member", Target = "~P:Whitebell.Library.Collections.Generic.OrderedDictionary`2.KeyCollection.System#Collections#ICollection#SyncRoot")]
+[assembly: SuppressMessage("Usage", "RCS1202:Avoid NullReferenceException.", Scope = "member", Target = "~P:Whitebell.Library.Collections.Generic.OrderedDictionary`2.ValueCollection.System#Collections#ICollection#SyncRoot")]
+
 #endif
