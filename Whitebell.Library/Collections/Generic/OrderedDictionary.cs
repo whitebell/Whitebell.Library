@@ -384,7 +384,7 @@ namespace Whitebell.Library.Collections.Generic
             }
             else
             {
-                value = default(TValue);
+                value = default;
                 return false;
             }
         }
@@ -783,7 +783,7 @@ namespace Whitebell.Library.Collections.Generic
                     d = dictionary;
                     index = 0;
                     version = dictionary.version;
-                    current = default(TKey);
+                    current = default;
                 }
 
                 /// <summary><see cref="Enumerator"/> によって使用されているすべてのリソースを解放します。</summary>
@@ -806,7 +806,7 @@ namespace Whitebell.Library.Collections.Generic
                     }
 
                     index = d.list.Count + 1;
-                    current = default(TKey);
+                    current = default;
                     return false;
                 }
 
@@ -827,7 +827,7 @@ namespace Whitebell.Library.Collections.Generic
                 void IEnumerator.Reset()
                 {
                     index = 0;
-                    current = default(TKey);
+                    current = default;
                 }
             }
         }
@@ -937,7 +937,7 @@ namespace Whitebell.Library.Collections.Generic
                     d = dictionary;
                     index = 0;
                     version = dictionary.version;
-                    current = default(TValue);
+                    current = default;
                 }
 
                 /// <summary><see cref="Enumerator"/> によって使用されているすべてのリソースを解放します。</summary>
@@ -960,7 +960,7 @@ namespace Whitebell.Library.Collections.Generic
                     }
 
                     index = d.list.Count + 1;
-                    current = default(TValue);
+                    current = default;
                     return false;
                 }
 
@@ -982,7 +982,7 @@ namespace Whitebell.Library.Collections.Generic
                 void IEnumerator.Reset()
                 {
                     index = 0;
-                    current = default(TValue);
+                    current = default;
                 }
             }
         }
