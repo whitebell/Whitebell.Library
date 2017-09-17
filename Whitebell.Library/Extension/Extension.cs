@@ -84,7 +84,7 @@ namespace Whitebell.Library.Extension
             if (max == null)
                 throw new ArgumentNullException(nameof(max));
             if (min.CompareTo(max) > 0)
-                throw new ArgumentException();
+                throw new ArgumentException($"\"{nameof(min)}\" greater than \"{nameof(max)}\"");
 
             return val.CompareTo(min) < 0 ? min
                  : val.CompareTo(max) > 0 ? max
