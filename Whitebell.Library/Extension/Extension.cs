@@ -112,7 +112,7 @@ namespace Whitebell.Library.Extension
             if (min.CompareTo(max) > 0)
                 throw new ArgumentException($"\"{nameof(min)}\" greater than \"{nameof(max)}\"");
 
-            return val.CompareTo(min) >= 0 && val.CompareTo(max) <= 0;
+            return val.CompareTo(min) >= 0 && val.CompareTo(max) <= 0; //TODO: この実装は [min, max] だけど、(min, max), [min, max), (min, max] とか必要な時は
         }
 
         #endregion
