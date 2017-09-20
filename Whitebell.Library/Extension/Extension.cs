@@ -126,7 +126,7 @@ namespace Whitebell.Library.Extension
         /// <param name="val"></param>
         /// <param name="min">最小値</param>
         /// <param name="max">最大値</param>
-        /// <param name="interval">区間の端点の扱いを示す。省略した場合は<see cref="Interval.Closed"/>（閉区間）として扱う。</param>
+        /// <param name="interval">区間の端点の扱いを示します。省略した場合は<see cref="Interval.Closed"/>（閉区間）として扱います。</param>
         /// <returns>最小値と最大値の範囲内に含まれている場合は true。それ以外の場合は false。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="min"/> または <paramref name="max"/> が null です。</exception>
         /// <exception cref="ArgumentException"><paramref name="min"/> が <paramref name="max"/> よりも大きい値です。</exception>
