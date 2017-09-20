@@ -62,17 +62,17 @@ namespace Whitebell.Library.Extension
     }
 
     /// <summary>
-    /// 区間の端点の扱いを示す。
+    /// 区間の端点の扱いを示します。
     /// </summary>
     public enum Interval
     {
-        /// <summary>閉区間</summary>
+        /// <summary>閉区間 [min, max]</summary>
         Closed,
-        /// <summary>開区間</summary>
+        /// <summary>開区間 (min, max)</summary>
         Open,
-        /// <summary>左閉半開区間</summary>
+        /// <summary>左閉半開区間 [min, max)</summary>
         LeftClosedRightOpen,
-        /// <summary>右閉半開区間</summary>
+        /// <summary>右閉半開区間 (min, max]</summary>
         LeftOpenRightClosed,
     }
 
