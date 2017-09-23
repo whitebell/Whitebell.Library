@@ -116,7 +116,6 @@ namespace Whitebell.Library.Extension
         /// <returns>最小値と最大値の範囲内に含まれている場合は true。それ以外の場合は false。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="min"/> または <paramref name="max"/> が null です。</exception>
         /// <exception cref="ArgumentException"><paramref name="min"/> が <paramref name="max"/> よりも大きい値です。</exception>
-        [Obsolete("use InRange<T>(T, T, T, Interval)")]
         public static bool InRange<T>(this T val, T min, T max) where T : IComparable<T> => InRange(val, min, max, Interval.Closed);
 
         /// <summary>
