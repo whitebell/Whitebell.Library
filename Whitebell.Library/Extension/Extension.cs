@@ -62,6 +62,21 @@ namespace Whitebell.Library.Extension
         LinguisticCasing = 1024,
     }
 
+    /// <summary>
+    /// 区間の端点の扱いを示します。
+    /// </summary>
+    public enum Interval
+    {
+        /// <summary>閉区間 [min, max]</summary>
+        Closed,
+        /// <summary>開区間 (min, max)</summary>
+        Open,
+        /// <summary>左閉半開区間 [min, max)</summary>
+        LeftClosedRightOpen,
+        /// <summary>右閉半開区間 (min, max]</summary>
+        LeftOpenRightClosed,
+    }
+
     public static class Extension
     {
         #region where T : System.IComparable<T>
@@ -102,7 +117,20 @@ namespace Whitebell.Library.Extension
         /// <returns>最小値と最大値の範囲内に含まれている場合は true。それ以外の場合は false。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="min"/> または <paramref name="max"/> が null です。</exception>
         /// <exception cref="ArgumentException"><paramref name="min"/> が <paramref name="max"/> よりも大きい値です。</exception>
-        public static bool InRange<T>(this T val, T min, T max) where T : IComparable<T>
+        public static bool InRange<T>(this T val, T min, T max) where T : IComparable<T> => InRange(val, min, max, Interval.Closed);
+
+        /// <summary>
+        /// 最小値、最大値を指定し、このインスタンスがその区間に含まれているかを示します。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="val"></param>
+        /// <param name="min">最小値</param>
+        /// <param name="max">最大値</param>
+        /// <param name="interval">区間の端点の扱いを示します。省略した場合は<see cref="Interval.Closed"/>（閉区間）として扱います。</param>
+        /// <returns>最小値と最大値の範囲内に含まれている場合は true。それ以外の場合は false。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="min"/> または <paramref name="max"/> が null です。</exception>
+        /// <exception cref="ArgumentException"><paramref name="min"/> が <paramref name="max"/> よりも大きい値です。</exception>
+        public static bool InRange<T>(this T val, T min, T max, Interval interval) where T : IComparable<T>
         {
             if (val == null)
                 throw new ArgumentNullException(nameof(val));
@@ -113,7 +141,19 @@ namespace Whitebell.Library.Extension
             if (min.CompareTo(max) > 0)
                 throw new ArgumentException($"\"{nameof(min)}\" greater than \"{nameof(max)}\"");
 
-            return val.CompareTo(min) >= 0 && val.CompareTo(max) <= 0; //TODO: この実装は [min, max] だけど、(min, max), [min, max), (min, max] とか必要な時は
+            switch (interval)
+            {
+                case Interval.Closed:
+                    return val.CompareTo(min) >= 0 && val.CompareTo(max) <= 0;
+                case Interval.Open:
+                    return val.CompareTo(min) > 0 && val.CompareTo(max) < 0;
+                case Interval.LeftClosedRightOpen:
+                    return val.CompareTo(min) >= 0 && val.CompareTo(max) < 0;
+                case Interval.LeftOpenRightClosed:
+                    return val.CompareTo(min) > 0 && val.CompareTo(max) <= 0;
+                default:
+                    throw new ArgumentException(nameof(interval));
+            }
         }
 
         #endregion
