@@ -384,7 +384,7 @@ namespace Whitebell.Library.Collections.Generic
             }
             else
             {
-                value = default(TValue);
+                value = default;
                 return false;
             }
         }
@@ -432,22 +432,12 @@ namespace Whitebell.Library.Collections.Generic
             if (value == null && default(TValue) != null) // TValue is struct.
                 throw new ArgumentNullException(nameof(value));
 
-            try
-            {
-                var tkey = (TKey)key;
-                try
-                {
-                    Add(tkey, (TValue)value);
-                }
-                catch (InvalidCastException)
-                {
-                    throw new ArgumentException(nameof(value));
-                }
-            }
-            catch (InvalidCastException)
-            {
+            if (!(key is TKey tk))
                 throw new ArgumentException(nameof(key));
-            }
+            if (!(value is TValue tv))
+                throw new ArgumentException(nameof(value));
+
+            Add(tk, tv);
         }
 
         bool IDictionary.Contains(object key)
@@ -455,7 +445,7 @@ namespace Whitebell.Library.Collections.Generic
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            return key is TKey ? ContainsKey((TKey)key) : false;
+            return key is TKey t ? ContainsKey(t) : false;
         }
 
         IDictionaryEnumerator IDictionary.GetEnumerator() => new Enumerator(this);
@@ -465,8 +455,8 @@ namespace Whitebell.Library.Collections.Generic
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            if (key is TKey)
-                Remove((TKey)key);
+            if (key is TKey t)
+                Remove(t);
         }
 
         void ICollection.CopyTo(Array array, int index)
@@ -535,9 +525,9 @@ namespace Whitebell.Library.Collections.Generic
             {
                 if (key == null)
                     throw new ArgumentNullException(nameof(key));
-                var k = (TKey)key;
-                if (dic.ContainsKey(k))
-                    return dic[k];
+
+                if (key is TKey tk && dic.ContainsKey(tk))
+                    return dic[tk];
                 return null;
             }
             set
@@ -547,23 +537,13 @@ namespace Whitebell.Library.Collections.Generic
                 if (value == null && default(TValue) != null) // TValue is struct.
                     throw new ArgumentNullException(nameof(value));
 
-                try
-                {
-                    var k = (TKey)key;
-                    try
-                    {
-                        this[k] = (TValue)value;
-                        version++;
-                    }
-                    catch (InvalidCastException)
-                    {
-                        throw new ArgumentException(nameof(value));
-                    }
-                }
-                catch (InvalidCastException)
-                {
+                if (!(key is TKey tk))
                     throw new ArgumentException(nameof(key));
-                }
+                if (!(value is TValue tv))
+                    throw new ArgumentException(nameof(value));
+
+                this[tk] = tv;
+                version++;
             }
         }
 
@@ -574,15 +554,12 @@ namespace Whitebell.Library.Collections.Generic
             {
                 if (value == null && default(TValue) != null) // TValue is struct.
                     throw new ArgumentNullException(nameof(value));
-                try
-                {
-                    this[index] = (TValue)value;
-                    version++;
-                }
-                catch (InvalidCastException)
-                {
+
+                if (!(value is TValue tv))
                     throw new ArgumentException(nameof(value));
-                }
+
+                this[index] = tv;
+                version++;
             }
         }
 
@@ -594,26 +571,15 @@ namespace Whitebell.Library.Collections.Generic
                 throw new ArgumentNullException(nameof(key));
             if (value == null && default(TValue) != null) // TValue is struct.
                 throw new ArgumentNullException(nameof(value));
-            try
-            {
-                var k = (TKey)key;
-                if (dic.ContainsKey(k))
-                    throw new ArgumentException(nameof(key));
 
-                try
-                {
-                    var v = (TValue)value;
-                    Insert(index, k, v);
-                }
-                catch (InvalidCastException)
-                {
-                    throw new ArgumentException(nameof(value));
-                }
-            }
-            catch (InvalidCastException)
-            {
+            if (!(key is TKey tk))
                 throw new ArgumentException(nameof(key));
-            }
+            if (dic.ContainsKey(tk))
+                throw new ArgumentException(nameof(key));
+            if (!(value is TValue tv))
+                throw new ArgumentException(nameof(value));
+
+            Insert(index, tk, tv);
         }
 
         IDictionaryEnumerator IOrderedDictionary.GetEnumerator() => GetEnumerator();
@@ -783,7 +749,7 @@ namespace Whitebell.Library.Collections.Generic
                     d = dictionary;
                     index = 0;
                     version = dictionary.version;
-                    current = default(TKey);
+                    current = default;
                 }
 
                 /// <summary><see cref="Enumerator"/> によって使用されているすべてのリソースを解放します。</summary>
@@ -806,7 +772,7 @@ namespace Whitebell.Library.Collections.Generic
                     }
 
                     index = d.list.Count + 1;
-                    current = default(TKey);
+                    current = default;
                     return false;
                 }
 
@@ -827,7 +793,7 @@ namespace Whitebell.Library.Collections.Generic
                 void IEnumerator.Reset()
                 {
                     index = 0;
-                    current = default(TKey);
+                    current = default;
                 }
             }
         }
@@ -937,7 +903,7 @@ namespace Whitebell.Library.Collections.Generic
                     d = dictionary;
                     index = 0;
                     version = dictionary.version;
-                    current = default(TValue);
+                    current = default;
                 }
 
                 /// <summary><see cref="Enumerator"/> によって使用されているすべてのリソースを解放します。</summary>
@@ -960,7 +926,7 @@ namespace Whitebell.Library.Collections.Generic
                     }
 
                     index = d.list.Count + 1;
-                    current = default(TValue);
+                    current = default;
                     return false;
                 }
 
@@ -982,7 +948,7 @@ namespace Whitebell.Library.Collections.Generic
                 void IEnumerator.Reset()
                 {
                     index = 0;
-                    current = default(TValue);
+                    current = default;
                 }
             }
         }

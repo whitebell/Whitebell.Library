@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
@@ -61,6 +62,21 @@ namespace Whitebell.Library.Extension
         LinguisticCasing = 1024,
     }
 
+    /// <summary>
+    /// 区間の端点の扱いを示します。
+    /// </summary>
+    public enum Interval
+    {
+        /// <summary>閉区間 [min, max]</summary>
+        Closed,
+        /// <summary>開区間 (min, max)</summary>
+        Open,
+        /// <summary>左閉半開区間 [min, max)</summary>
+        LeftClosedRightOpen,
+        /// <summary>右閉半開区間 (min, max]</summary>
+        LeftOpenRightClosed,
+    }
+
     public static class Extension
     {
         #region where T : System.IComparable<T>
@@ -84,7 +100,7 @@ namespace Whitebell.Library.Extension
             if (max == null)
                 throw new ArgumentNullException(nameof(max));
             if (min.CompareTo(max) > 0)
-                throw new ArgumentException();
+                throw new ArgumentException($"\"{nameof(min)}\" greater than \"{nameof(max)}\"");
 
             return val.CompareTo(min) < 0 ? min
                  : val.CompareTo(max) > 0 ? max
@@ -101,7 +117,20 @@ namespace Whitebell.Library.Extension
         /// <returns>最小値と最大値の範囲内に含まれている場合は true。それ以外の場合は false。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="min"/> または <paramref name="max"/> が null です。</exception>
         /// <exception cref="ArgumentException"><paramref name="min"/> が <paramref name="max"/> よりも大きい値です。</exception>
-        public static bool InRange<T>(this T val, T min, T max) where T : IComparable<T>
+        public static bool InRange<T>(this T val, T min, T max) where T : IComparable<T> => InRange(val, min, max, Interval.Closed);
+
+        /// <summary>
+        /// 最小値、最大値を指定し、このインスタンスがその区間に含まれているかを示します。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="val"></param>
+        /// <param name="min">最小値</param>
+        /// <param name="max">最大値</param>
+        /// <param name="interval">区間の端点の扱いを示します。省略した場合は<see cref="Interval.Closed"/>（閉区間）として扱います。</param>
+        /// <returns>最小値と最大値の範囲内に含まれている場合は true。それ以外の場合は false。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="min"/> または <paramref name="max"/> が null です。</exception>
+        /// <exception cref="ArgumentException"><paramref name="min"/> が <paramref name="max"/> よりも大きい値です。</exception>
+        public static bool InRange<T>(this T val, T min, T max, Interval interval) where T : IComparable<T>
         {
             if (val == null)
                 throw new ArgumentNullException(nameof(val));
@@ -112,7 +141,19 @@ namespace Whitebell.Library.Extension
             if (min.CompareTo(max) > 0)
                 throw new ArgumentException($"\"{nameof(min)}\" greater than \"{nameof(max)}\"");
 
-            return val.CompareTo(min) >= 0 && val.CompareTo(max) <= 0;
+            switch (interval)
+            {
+                case Interval.Closed:
+                    return val.CompareTo(min) >= 0 && val.CompareTo(max) <= 0;
+                case Interval.Open:
+                    return val.CompareTo(min) > 0 && val.CompareTo(max) < 0;
+                case Interval.LeftClosedRightOpen:
+                    return val.CompareTo(min) >= 0 && val.CompareTo(max) < 0;
+                case Interval.LeftOpenRightClosed:
+                    return val.CompareTo(min) > 0 && val.CompareTo(max) <= 0;
+                default:
+                    throw new ArgumentException(nameof(interval));
+            }
         }
 
         #endregion
@@ -443,6 +484,24 @@ namespace Whitebell.Library.Extension
             }
 
             return sb.ToString();
+        }
+
+        #endregion
+
+        #region System.Reflection.MemberInfo
+
+        /// <summary>このメンバーに適用されていて、型引数 <typeparamref name="T"/> によって識別されるカスタム属性の配列を返します。</summary>
+        /// <typeparam name="T">検索する属性の型。この型に割り当てることができる属性だけが返されます。</typeparam>
+        /// <param name="inherit">このメンバーの継承チェーンを検索して属性を見つける場合は true。それ以外の場合は false。プロパティおよびイベントの場合、このパラメーターは無視されます。</param>
+        /// <param name="mi"></param>
+        /// <returns>このメンバーに適用されているカスタム属性の配列。<typeparamref name="T"/> に割り当てることができる属性が適用されていない場合は、要素がゼロの配列。</returns>
+        /// <exception cref="TypeLoadException">カスタム属性の型を読み込むことができません。</exception>
+        /// <exception cref="InvalidOperationException">このメンバーは、リフレクションのみのコンテキストに読み込まれる型に属します。</exception>
+        public static T[] GetCustomAttributes<T>(this MemberInfo mi, bool inherit)
+        {
+            if (mi.GetCustomAttributes(typeof(T), inherit) is T[] ts)
+                return ts;
+            return new T[0];
         }
 
         #endregion

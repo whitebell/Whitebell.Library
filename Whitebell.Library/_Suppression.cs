@@ -7,7 +7,20 @@
 [assembly: SuppressMessage("Readability", "RCS1191:Declare enum value as combination of names.", Scope = "type", Target = "~T:Whitebell.Library.Kernel32.MapFlag")]
 [assembly: SuppressMessage("Readability", "RCS1191:Declare enum value as combination of names.", Scope = "type", Target = "~T:Whitebell.Library.Extension.StringConvert")]
 
-[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "Type", Target = "Whitebell.Library.Collections.Generic.OrderedDictionary`2")]
-[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "Type", Target = "Whitebell.Library.Extension.Extension")]
+[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "member", Target = "~P:Whitebell.Library.Collections.Generic.OrderedDictionary`2.Item(`0)")]
+[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "member", Target = "~M:Whitebell.Library.Collections.Generic.OrderedDictionary`2.Add(`0,`1)")]
+[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "member", Target = "~M:Whitebell.Library.Collections.Generic.OrderedDictionary`2.ContainsKey(`0)~System.Boolean")]
+[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "member", Target = "~M:Whitebell.Library.Collections.Generic.OrderedDictionary`2.Remove(`0)~System.Boolean")]
+[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "member", Target = "~M:Whitebell.Library.Collections.Generic.OrderedDictionary`2.TryGetValue(`0,`1@)~System.Boolean")]
+[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "member", Target = "~M:Whitebell.Library.Collections.Generic.OrderedDictionary`2.System#Collections#IDictionary#Add(System.Object,System.Object)")]
+[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "member", Target = "~P:Whitebell.Library.Collections.Generic.OrderedDictionary`2.System#Collections#IDictionary#Item(System.Object)")]
+[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "member", Target = "~P:Whitebell.Library.Collections.Generic.OrderedDictionary`2.System#Collections#Specialized#IOrderedDictionary#Item(System.Int32)")]
+[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "member", Target = "~M:Whitebell.Library.Collections.Generic.OrderedDictionary`2.System#Collections#Specialized#IOrderedDictionary#Insert(System.Int32,System.Object,System.Object)")]
+
+[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "member", Target = "~M:Whitebell.Library.Extension.Extension.Clamp``1(``0,``0,``0)~``0")]
+[assembly: SuppressMessage("Usage", "RCS1165:Unconstrained type parameter checked for null.", Scope = "member", Target = "~M:Whitebell.Library.Extension.Extension.InRange``1(``0,``0,``0,Whitebell.Library.Extension.Interval)~System.Boolean")]
+
+[assembly: SuppressMessage("Usage", "RCS1202:Avoid NullReferenceException.", Scope = "member", Target = "~P:Whitebell.Library.Collections.Generic.OrderedDictionary`2.KeyCollection.System#Collections#ICollection#SyncRoot")]
+[assembly: SuppressMessage("Usage", "RCS1202:Avoid NullReferenceException.", Scope = "member", Target = "~P:Whitebell.Library.Collections.Generic.OrderedDictionary`2.ValueCollection.System#Collections#ICollection#SyncRoot")]
 
 #endif
