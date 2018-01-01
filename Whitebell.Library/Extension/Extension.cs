@@ -498,7 +498,11 @@ namespace Whitebell.Library.Extension
         /// <exception cref="TypeLoadException">カスタム属性の型を読み込むことができません。</exception>
         /// <exception cref="InvalidOperationException">このメンバーは、リフレクションのみのコンテキストに読み込まれる型に属します。</exception>
         public static T[] GetCustomAttributes<T>(this MemberInfo mi, bool inherit)
-            => mi.GetCustomAttributes(typeof(T), inherit) as T[];
+        {
+            if (mi.GetCustomAttributes(typeof(T), inherit) is T[] ts)
+                return ts;
+            return new T[0];
+        }
 
         #endregion
 
