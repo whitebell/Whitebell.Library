@@ -455,7 +455,7 @@ namespace Whitebell.Library.Collections.Generic
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            return key is TKey ? ContainsKey((TKey)key) : false;
+            return key is TKey t ? ContainsKey(t) : false;
         }
 
         IDictionaryEnumerator IDictionary.GetEnumerator() => new Enumerator(this);
@@ -465,8 +465,8 @@ namespace Whitebell.Library.Collections.Generic
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            if (key is TKey)
-                Remove((TKey)key);
+            if (key is TKey t)
+                Remove(t);
         }
 
         void ICollection.CopyTo(Array array, int index)
