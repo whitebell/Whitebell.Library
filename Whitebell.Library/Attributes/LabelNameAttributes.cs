@@ -6,7 +6,7 @@ using Whitebell.Library.Extension;
 namespace Whitebell.Library.Attributes
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
-    public class LabelNameAttribute : Attribute
+    public sealed class LabelNameAttribute : Attribute
     {
         private readonly string _label;
         private static readonly ConcurrentDictionary<Enum, string> cache = new ConcurrentDictionary<Enum, string>();
