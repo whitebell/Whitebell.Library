@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\LabelNameAttributes.cs" />
+    <Compile Include="Attributes\LabelNameAttribute.cs" />
     <Compile Include="Collections\Generic\OrderedDictionary.cs" />
     <Compile Include="Extension\Extension.cs" />
     <Compile Include="Generics.cs" />
