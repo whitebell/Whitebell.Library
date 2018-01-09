@@ -326,7 +326,7 @@ namespace Whitebell.Library.Collections.Generic
             eqComparer = si.GetValue<IEqualityComparer<TKey>>(EqualityComparerName);
             initialCapacity = si.GetInt32(InitialCapacityName);
             var realVersion = si.GetInt32(VersionName);
-            var kvps = si.GetValue<KeyValuePair<TKey, TValue>[]>(KeyValuePairsName) ?? new KeyValuePair<TKey, TValue>[] { };
+            var kvps = si.GetValue<KeyValuePair<TKey, TValue>[]>(KeyValuePairsName) ?? Array.Empty<KeyValuePair<TKey, TValue>>();
 
             foreach (var e in kvps)
                 Add(e.Key, e.Value);

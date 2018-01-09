@@ -501,7 +501,7 @@ namespace Whitebell.Library.Extension
         {
             if (mi.GetCustomAttributes(typeof(T), inherit) is T[] ts)
                 return ts;
-            return new T[0];
+            return Array.Empty<T>();
         }
 
         #endregion
