@@ -249,7 +249,7 @@ namespace Whitebell.Library
         /// <param name="lpszSrc">A pointer to a null-terminated string of maximum length MAX_PATH that contains the path to be canonicalized.</param>
         /// <returns>Returns TRUE if a result has been computed and the content of the lpszDst output buffer is valid. Returns FALSE otherwise, and the contents of the buffer pointed to by lpszDst are invalid. To get extended error information, call GetLastError.</returns>
         /// <remarks>This function allows the user to specify what to remove from a path by inserting special character sequences into the path. The ".." sequence indicates to remove a path segment from the current position to the previous path segment. The "." sequence indicates to skip over the next path segment to the following path segment. The root segment of the path cannot be removed. If there are more ".." sequences than there are path segments, the function returns TRUE and contents of the buffer pointed to by lpszDst contains just the root, "\".</remarks>
-        [DllImport("shlwapi", CharSet = CharSet.Auto, SetLastError = true)]
+        [DllImport("shlwapi", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool PathCanonicalize([Out]StringBuilder lpszDst, string lpszSrc);
         // BOOL PathCanonicalize(_Out_ LPTSTR lpszDst, _In_ LPCTSTR lpszSrc);
@@ -281,7 +281,7 @@ namespace Whitebell.Library
         /// <param name="dwAttrTo">The file attributes of pszTo. If this value contains FILE_ATTRIBUTE_DIRECTORY, pszTo is assumed to be directory; otherwise, pszTo is assumed to be a file.</param>
         /// <returns>Returns TRUE if successful, or FALSE otherwise.</returns>
         /// <remarks>This function takes a pair of paths and generates a relative path from one to the other. The paths do not have to be fully qualified, but they must have a common prefix, or the function will fail and return FALSE. For example, let the starting point, pszFrom, be "c:\FolderA\FolderB\FolderC", and the ending point, pszTo, be "c:\FolderA\FolderD\FolderE". PathRelativePathTo will return the relative path from pszFrom to pszTo as: "..\..\FolderD\FolderE". You will get the same result if you set pszFrom to "\FolderA\FolderB\FolderC" and pszTo to "\FolderA\FolderD\FolderE". On the other hand, "c:\FolderA\FolderB" and "a:\FolderA\FolderD do not share a common prefix, and the function will fail. Note that "\\" is not considered a prefix and is ignored. If you set pszFrom to "\\FolderA\FolderB", and pszTo to "\\FolderC\FolderD", the function will fail.</remarks>
-        [DllImport("shlwapi", SetLastError = true, CharSet = CharSet.Auto)]
+        [DllImport("shlwapi", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern bool PathRelativePathTo([Out]StringBuilder pszPath, [In]string pszFrom, [In]FileAttributes dwAttrFrom, [In]string pszTo, [In]FileAttributes dwAttrTo);
         // BOOL PathRelativePathTo(_Out_ LPTSTR pszPath, _In_ LPCTSTR pszFrom, _In_ DWORD dwAttrFrom, _In_ LPCTSTR pszTo, _In_ DWORD dwAttrTo);
 
@@ -312,8 +312,8 @@ namespace Whitebell.Library
         /// </summary>
         /// <param name="pszFile">A pointer to a null-terminated string of length MAX_PATH from which to remove the extension.</param>
         /// <returns>This function does not return a value.</returns>
-        [DllImport("shlwapi", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern void PathRemoveExtension([MarshalAs(UnmanagedType.LPTStr)]StringBuilder pszFile);
+        [DllImport("shlwapi", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern void PathRemoveExtension([MarshalAs(UnmanagedType.LPWStr)]StringBuilder pszFile);
         // void PathRemoveExtension(_Inout_ LPTSTR pszPath);
 
         /// <summary>
