@@ -48,6 +48,7 @@ namespace Whitebell.Library.Collections.Generic
         private KeyCollection keys;
         private ValueCollection values;
         private readonly SerializationInfo si;
+        [NonSerialized]
         private object syncRoot;
         private int version;
 
