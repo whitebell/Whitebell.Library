@@ -10,7 +10,9 @@
 
 ## 注意
 
-Win32APIを呼んでいる箇所があるので、Windows以外のOSだとそのあたり使えません。
+- Win32APIを呼んでいる箇所があるので、Windows以外のOSだとそのあたり使えません。
+- Win32APIはろくにテストしてないです。
+- `Whitebell.Library.Collections.Generic.OrderedDictionary<TKey, TValue>`のシリアライズまわりはろくにテストしてないです。
 
 ## ライセンス
 
