@@ -20,42 +20,52 @@ namespace Whitebell.Library.Extension
         /// Performs no conversion.
         /// </summary>
         None = 0,
+
         /// <summary>
         /// Converts the string to uppercase characters.
         /// </summary>
         Uppercase = 1,
+
         /// <summary>
         /// Converts the string to lowercase characters.
         /// </summary>
         Lowercase = 2,
+
         /// <summary>
         /// Converts the first letter of every word in the string to uppercase.
         /// </summary>
         TitleCase = 3,
+
         /// <summary>
         /// Converts narrow (single-byte) characters in the string to wide (double-byte) characters. Applies to Asian locales.
         /// </summary>
         FullWidth = 4,
+
         /// <summary>
         /// Converts wide (double-byte) characters in the string to narrow (single-byte) characters. Applies to Asian locales.
         /// </summary>
         HalfWidth = 8,
+
         /// <summary>
         /// Converts Hiragana characters in the string to Katakana characters. Applies to Japanese locale only.
         /// </summary>
         Katakana = 16,
+
         /// <summary>
         /// Converts Katakana characters in the string to Hiragana characters. Applies to Japanese locale only.
         /// </summary>
         Hiragana = 32,
+
         /// <summary>
         /// Converts the string to Simplified Chinese characters.
         /// </summary>
         SimplifiedChinese = 256,
+
         /// <summary>
         /// Converts the string to Traditional Chinese characters.
         /// </summary>
         TraditionalChinese = 512,
+
         /// <summary>
         /// Converts the string from file system rules for casing to linguistic rules.
         /// </summary>
@@ -69,10 +79,13 @@ namespace Whitebell.Library.Extension
     {
         /// <summary>閉区間 [min, max]</summary>
         Closed,
+
         /// <summary>開区間 (min, max)</summary>
         Open,
+
         /// <summary>左閉半開区間 [min, max)</summary>
         LeftClosedRightOpen,
+
         /// <summary>右閉半開区間 (min, max]</summary>
         LeftOpenRightClosed,
     }

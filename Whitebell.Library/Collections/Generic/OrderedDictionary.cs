@@ -48,9 +48,10 @@ namespace Whitebell.Library.Collections.Generic
         private KeyCollection keys;
         private ValueCollection values;
         private readonly SerializationInfo si;
+        private int version;
+
         [NonSerialized]
         private object syncRoot;
-        private int version;
 
         private const string VersionName = "Version";
         private const string EqualityComparerName = "EqualityComparer";
@@ -426,6 +427,7 @@ namespace Whitebell.Library.Collections.Generic
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
         void IDictionary.Add(object key, object value)
         {
             if (key == null)
