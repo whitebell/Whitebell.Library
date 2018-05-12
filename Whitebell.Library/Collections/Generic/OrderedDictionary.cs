@@ -448,7 +448,7 @@ namespace Whitebell.Library.Collections.Generic
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            return key is TKey t ? ContainsKey(t) : false;
+            return key is TKey t && ContainsKey(t);
         }
 
         IDictionaryEnumerator IDictionary.GetEnumerator() => new Enumerator(this);
