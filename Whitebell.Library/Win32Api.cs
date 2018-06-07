@@ -202,19 +202,28 @@ namespace Whitebell.Library
         /// If the function fails, the return value is false. To get extended error information, call <see cref="Marshal.GetLastWin32Error()"/>.
         /// The maximum number of hard links that can be created with this function is 1023 per file.
         /// If more than 1023 links are created for a file, an error results.</returns>
-        [DllImport("Kernel32", SetLastError = true, CharSet = CharSet.Unicode)]
+        [DllImport("Kernel32", SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "CreateHardLink")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool CreateHardLink(string lpFileName, string lpExistingFileName, IntPtr lpSecurityAttributes);
+        private static extern bool _CreateHardLink(string lpFileName, string lpExistingFileName, IntPtr lpSecurityAttributes);
         // BOOL WINAPI CreateHardLink(_In_ LPCTSTR lpFileName, _In_ LPCTSTR lpExistingFileName, _Reserved_ LPSECURITY_ATTRIBUTES lpSecurityAttributes);
 
         /// <summary>Establishes a hard link between an existing file and a new file. This function is only supported on the NTFS file system, and only for files, not directories.</summary>
-        /// <param name="lpFileName">The name of the new file. This parameter cannot specify the name of a directory.</param>
-        /// <param name="lpExistingFileName">The name of the existing file. This parameter cannnot specify the name of directory.</param>
+        /// <param name="newFileName">The name of the new file. This parameter cannot specify the name of a directory.</param>
+        /// <param name="existingFileName">The name of the existing file. This parameter cannnot specify the name of directory.</param>
         /// <returns>If the function succeeds, the return value is true.
         /// If the function fails, the return value is false. To get extended error information, call <see cref="Marshal.GetLastWin32Error()"/>.
         /// The maximum number of hard links that can be created with this function is 1023 per file.
         /// If more than 1023 links are created for a file, an error results.</returns>
-        public static bool CreateHardLink(string lpFileName, string lpExistingFileName) => CreateHardLink(lpFileName, lpExistingFileName, IntPtr.Zero);
+        /// <exception cref="ArgumentNullException"></exception>
+        public static bool CreateHardLink(string newFileName, string existingFileName)
+        {
+            if (newFileName == null)
+                throw new ArgumentNullException(nameof(newFileName));
+            if (existingFileName == null)
+                throw new ArgumentNullException(nameof(existingFileName));
+
+            return _CreateHardLink(newFileName, existingFileName, IntPtr.Zero);
+        }
 
         #endregion
 
@@ -227,12 +236,29 @@ namespace Whitebell.Library
         /// otherwise, the link is treated as a relative link.</param>
         /// <param name="dwFlags">Indicates whether the link target, lpTargetFileName, is a directory.</param>
         /// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false.</returns>
-        [CLSCompliant(false)]
-        [DllImport("Kernel32", SetLastError = true, CharSet = CharSet.Unicode)]
+        [DllImport("Kernel32", SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "CreateSymbolicLink")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool CreateSymbolicLink(string lpSymlinkFileName, string lpTargetFileName, SymbolicLink dwFlags);
+        private static extern bool _CreateSymbolicLink(string lpSymlinkFileName, string lpTargetFileName, SymbolicLink dwFlags);
         // BOOLEAN WINAPI CreateSymbolicLink(_In_ LPTSTR lpSymlinkFileName, _In_ LPTSTR loTargetFileName, _In_ DWORD dwFlags);
 
+        /// <summary>Creates a symbolic link.</summary>
+        /// <param name="symlinkFileName">The Symbolic link to be created.</param>
+        /// <param name="targetFileName">The name of the target for the symbolic link to be created.
+        /// If targetFileName has a device name associated with it, the link is treated as an absolute link;
+        /// otherwise, the link is treated as a relative link.</param>
+        /// <param name="dwFlags">Indicates whether the link target, targetFileName, is a directory.</param>
+        /// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        [CLSCompliant(false)]
+        public static bool CreateSymbolicLink(string symlinkFileName, string targetFileName, SymbolicLink dwFlags)
+        {
+            if (symlinkFileName == null)
+                throw new ArgumentNullException(nameof(symlinkFileName));
+            if (targetFileName == null)
+                throw new ArgumentNullException(nameof(targetFileName));
+
+            return _CreateSymbolicLink(symlinkFileName, targetFileName, dwFlags);
+        }
         #endregion
 
         #region LCMapStringEx (Vista/Server 2008)
