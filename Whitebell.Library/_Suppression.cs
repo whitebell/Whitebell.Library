@@ -23,4 +23,6 @@
 [assembly: SuppressMessage("Usage", "RCS1202:Avoid NullReferenceException.", Scope = "member", Target = "~P:Whitebell.Library.Collections.Generic.OrderedDictionary`2.KeyCollection.System#Collections#ICollection#SyncRoot")]
 [assembly: SuppressMessage("Usage", "RCS1202:Avoid NullReferenceException.", Scope = "member", Target = "~P:Whitebell.Library.Collections.Generic.OrderedDictionary`2.ValueCollection.System#Collections#ICollection#SyncRoot")]
 
+[assembly: SuppressMessage("Style", "IDE0044:Add readonly modifier", Justification = "<Pending>", Scope = "member", Target = "~F:Whitebell.Library.Win32Api.Wrap.WinmmTimer.t")]
+
 #endif
