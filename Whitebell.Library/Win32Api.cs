@@ -402,9 +402,30 @@ namespace Whitebell.Library
         /// Returns 1 if the string pointed to by psz1 has a greater value than that pointed to by psz2.
         /// Returns -1 if the string pointed to by psz1 has a lesser value than that pointed to by psz2.
         /// </returns>
-        [DllImport("shlwapi", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern int StrCmpLogicalW(string psz1, string psz2);
+        [DllImport("shlwapi", CharSet = CharSet.Unicode, ExactSpelling = true, EntryPoint = "StrCmpLogicalW")]
+        private static extern int _StrCmpLogicalW(string psz1, string psz2);
         // int StrCmpLogicalW(_In_ PCWSTR psz1, _In_ PCWSTR psz2);
+
+        /// <summary>
+        /// Compares two Unicode strings.
+        /// Digits in the strings are considered as numerical content rather than text.
+        /// This test is not case-sensitive.
+        /// </summary>
+        /// <param name="psz1">A pointer to the first null-terminated string to be compared.</param>
+        /// <param name="psz2">A pointer to the second null-terminated string to be compared.</param>
+        /// <returns>Returns zero if the strings are identical.
+        /// Returns 1 if the string pointed to by psz1 has a greater value than that pointed to by psz2.
+        /// Returns -1 if the string pointed to by psz1 has a lesser value than that pointed to by psz2.
+        /// </returns>
+        public static int StrCmpLogicalW(string psz1, string psz2)
+        {
+            if (psz1 == null)
+                throw new ArgumentNullException(nameof(psz1));
+            if (psz2 == null)
+                throw new ArgumentNullException(nameof(psz2));
+
+            return _StrCmpLogicalW(psz1, psz2);
+        }
 
         #endregion
     }
