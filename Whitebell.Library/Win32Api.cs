@@ -214,13 +214,13 @@ namespace Whitebell.Library
         /// If the function fails, the return value is false. To get extended error information, call <see cref="Marshal.GetLastWin32Error()"/>.
         /// The maximum number of hard links that can be created with this function is 1023 per file.
         /// If more than 1023 links are created for a file, an error results.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public static bool CreateHardLink(string newFileName, string existingFileName)
         {
-            if (newFileName == null)
-                throw new ArgumentNullException(nameof(newFileName));
-            if (existingFileName == null)
-                throw new ArgumentNullException(nameof(existingFileName));
+            if (String.IsNullOrWhiteSpace(newFileName))
+                throw new ArgumentException(nameof(newFileName));
+            if (String.IsNullOrWhiteSpace(existingFileName))
+                throw new ArgumentException(nameof(existingFileName));
 
             return _CreateHardLink(newFileName, existingFileName, IntPtr.Zero);
         }
@@ -248,14 +248,14 @@ namespace Whitebell.Library
         /// otherwise, the link is treated as a relative link.</param>
         /// <param name="dwFlags">Indicates whether the link target, targetFileName, is a directory.</param>
         /// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         [CLSCompliant(false)]
         public static bool CreateSymbolicLink(string symlinkFileName, string targetFileName, SymbolicLink dwFlags)
         {
-            if (symlinkFileName == null)
-                throw new ArgumentNullException(nameof(symlinkFileName));
-            if (targetFileName == null)
-                throw new ArgumentNullException(nameof(targetFileName));
+            if (String.IsNullOrWhiteSpace(symlinkFileName))
+                throw new ArgumentException(nameof(symlinkFileName));
+            if (String.IsNullOrWhiteSpace(targetFileName))
+                throw new ArgumentException(nameof(targetFileName));
 
             return _CreateSymbolicLink(symlinkFileName, targetFileName, dwFlags);
         }
