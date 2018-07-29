@@ -173,7 +173,7 @@ namespace Whitebell.Library.Extension
 
         #region System.Char
 
-        #region from Unicode::EastAsianWidth 1.33 by ☻ 唐鳳 ☺ Audrey Tang http://search.cpan.org/~audreyt/Unicode-EastAsianWidth-1.33/
+        #region from Unicode::EastAsianWidth 1.33 by ☻ 唐鳳 ☺ Audrey Tang https://metacpan.org/release/AUDREYT/Unicode-EastAsianWidth-1.33
 
         public static bool InFullwidth(this char chr)
             => chr.InFullwidth(eastAsian: true);
