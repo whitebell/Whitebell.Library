@@ -406,7 +406,7 @@ namespace Whitebell.Library.Extension
             Array.ConstrainedCopy(dest, 0, cs, 0, count);
             var ret = new string(cs);
 
-            if ((conversion & (StringConvert.TitleCase)) == StringConvert.TitleCase)
+            if ((conversion & StringConvert.TitleCase) == StringConvert.TitleCase)
                 return ci.TextInfo.ToTitleCase(ret);
             return ret;
         }
