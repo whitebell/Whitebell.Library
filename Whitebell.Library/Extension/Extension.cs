@@ -505,8 +505,8 @@ namespace Whitebell.Library.Extension
 
         /// <summary>このメンバーに適用されていて、型引数 <typeparamref name="T"/> によって識別されるカスタム属性の配列を返します。</summary>
         /// <typeparam name="T">検索する属性の型。この型に割り当てることができる属性だけが返されます。</typeparam>
-        /// <param name="inherit">このメンバーの継承チェーンを検索して属性を見つける場合は true。それ以外の場合は false。プロパティおよびイベントの場合、このパラメーターは無視されます。</param>
         /// <param name="mi"></param>
+        /// <param name="inherit">このメンバーの継承チェーンを検索して属性を見つける場合は true。それ以外の場合は false。プロパティおよびイベントの場合、このパラメーターは無視されます。</param>
         /// <returns>このメンバーに適用されているカスタム属性の配列。<typeparamref name="T"/> に割り当てることができる属性が適用されていない場合は、要素がゼロの配列。</returns>
         /// <exception cref="TypeLoadException">カスタム属性の型を読み込むことができません。</exception>
         /// <exception cref="InvalidOperationException">このメンバーは、リフレクションのみのコンテキストに読み込まれる型に属します。</exception>
