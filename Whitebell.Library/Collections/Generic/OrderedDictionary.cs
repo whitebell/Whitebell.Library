@@ -276,7 +276,7 @@ namespace Whitebell.Library.Collections.Generic
 
         /// <summary><see cref="OrderedDictionary{TKey, TValue}"/> を反復処理する列挙子を返します。</summary>
         /// <returns><see cref="OrderedDictionary{TKey, TValue}"/> の <see cref="Enumerator"/> 構造体。</returns>
-        public Enumerator GetEnumerator() => new Enumerator(this);
+        public Enumerator GetEnumerator() => new(this);
 
         /// <summary><see cref="ISerializable"/> インターフェイスを実装し、<see cref="OrderedDictionary{TKey, TValue}"/> インスタンスをシリアル化するために必要なデータを返します。</summary>
         /// <param name="info"><see cref="OrderedDictionary{TKey, TValue}"/> インスタンスをシリアル化するために必要な情報を格納する <see cref="SerializationInfo"/> オブジェクト。</param>
@@ -649,7 +649,7 @@ namespace Whitebell.Library.Collections.Generic
 
             object IDictionaryEnumerator.Value => Current.Value;
 
-            DictionaryEntry IDictionaryEnumerator.Entry => new DictionaryEntry(Current.Key, Current.Value);
+            DictionaryEntry IDictionaryEnumerator.Entry => new(Current.Key, Current.Value);
         }
 
         /// <summary><see cref="OrderedDictionary{TKey, TValue}"/> 内のキーのコレクションを表します。 このクラスは継承できません。</summary>
@@ -665,7 +665,7 @@ namespace Whitebell.Library.Collections.Generic
 
             /// <summary><see cref="KeyCollection"/> を反復処理する列挙子を返します。</summary>
             /// <returns><see cref="KeyCollection"/> の <see cref="Enumerator"/>。</returns>
-            public Enumerator GetEnumerator() => new Enumerator(d);
+            public Enumerator GetEnumerator() => new(d);
 
             /// <summary><see cref="KeyCollection"/> の要素を既存の 1 次元の <see cref="Array"/> にコピーします。コピー操作は、配列内の指定したインデックスから始まります。</summary>
             /// <param name="array"><see cref="KeyCollection"/> から要素がコピーされる 1 次元の <see cref="Array"/>。<see cref="Array"/>には、0 から始まるインデックス番号が必要です。</param>
@@ -814,7 +814,7 @@ namespace Whitebell.Library.Collections.Generic
 
             /// <summary><see cref="ValueCollection"/> を反復処理する列挙子を返します。</summary>
             /// <returns><see cref="ValueCollection"/> の <see cref="Enumerator"/>。</returns>
-            public Enumerator GetEnumerator() => new Enumerator(d);
+            public Enumerator GetEnumerator() => new(d);
 
             /// <summary><see cref="ValueCollection"/> の要素を既存の 1 次元の <see cref="Array"/> にコピーします。コピー操作は、配列内の指定したインデックスから始まります。</summary>
             /// <param name="array"><see cref="ValueCollection"/> から要素がコピーされる 1 次元の <see cref="Array"/>。<see cref="Array"/>には、0 から始まるインデックス番号が必要です。</param>

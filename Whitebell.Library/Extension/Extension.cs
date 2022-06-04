@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -549,5 +551,36 @@ namespace Whitebell.Library.Extension
         }
 
         #endregion
+
+#if NETFRAMEWORK
+        /// <summary>Tries to get the value associated with the specified key in the dictionary.</summary>
+        /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
+        /// <param name="dictionary">A dictionary with keys of type TKey and values of type TValue.</param>
+        /// <param name="key">The key of the value to get.</param>
+        /// <returns>A <typeparamref name="TValue"/> instance. When the method is successful, the returned object is the value associated with the specified key. When the method fails, it returns the default value for <typeparamref name="TValue"/>.</returns>
+        /// <exception cref="ArgumentNullException">dictionary is null.</exception>
+        public static TValue? GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
+        {
+            if (dictionary is null)
+                throw new ArgumentNullException(nameof(dictionary), $"{nameof(dictionary)} is null.");
+            return dictionary.ContainsKey(key) ? dictionary[key] : default;
+        }
+
+        /// <summary>Tries to get the value associated with the specified key in the dictionary.</summary>
+        /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
+        /// <param name="dictionary">A dictionary with keys of type TKey and values of type TValue.</param>
+        /// <param name="key">The key of the value to get.</param>
+        /// <param name="defaultValue">The default value to return when the dictionary cannot find a value associated with the specified key.</param>
+        /// <returns>A <typeparamref name="TValue"/> instance. When the method is successful, the returned object is the value associated with the specified key. When the method fails, it returns defaultValue.</returns>
+        /// <exception cref="ArgumentNullException">dictionary is null.</exception>
+        public static TValue GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+        {
+            if (dictionary is null)
+                throw new ArgumentNullException(nameof(dictionary), $"{nameof(dictionary)} is null.");
+            return dictionary.ContainsKey(key) ? dictionary[key] : defaultValue;
+        }
+#endif
     }
 }

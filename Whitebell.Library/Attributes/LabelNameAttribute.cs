@@ -9,7 +9,7 @@ namespace Whitebell.Library.Attributes
     public sealed class LabelNameAttribute : Attribute
     {
         private readonly string _label;
-        private static readonly ConcurrentDictionary<Enum, string> cache = new ConcurrentDictionary<Enum, string>();
+        private static readonly ConcurrentDictionary<Enum, string> cache = new();
 
         public LabelNameAttribute(string label) => _label = label;
 
